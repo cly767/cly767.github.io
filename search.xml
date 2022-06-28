@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>Archlinux 启用开机音效</title>
+      <link href="/2022/06/25/archlinux-startup-sound/"/>
+      <url>/2022/06/25/archlinux-startup-sound/</url>
+      
+        <content type="html"><![CDATA[<p>Arch Linux是一个高度可定制的Linux发行版。但是，高度的自定义性也带来了很多麻烦。</p><p>在我那台十八年神机上装好Arch、dwm之后的一天，我突发奇想：有没有可能让linux像Windows那样拥有开机音效呢？</p><h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>clone 一下这个：<a href="https://github.com/ubuntu/Yaru">https://github.com/ubuntu/Yaru</a>，复制 sounds&#x2F;src&#x2F;stereo&#x2F;desktop-login.oga 到 &#x2F;etc&#x2F;sounds&#x2F;startup.oga。文件夹 <code>/etc/sounds</code> 需要自行创建。</p><h2 id="Systemd-法"><a href="#Systemd-法" class="headerlink" title="Systemd 法"></a>Systemd 法</h2><p>想要让某个东西在 Linux 启动时跟着启动，那最好的方法就是你正在用的 init 程序。Arch 预装的是 systemd，然后就照着 Arch Wiki 上的教程写了个 Unit 文件。大概长这样：</p><pre><code>[Unit]Description=Play Startup SoundRequires=alsa-restore.serviceAfter=alsa-restore.service[Service]ExecStart=/usr/bin/play /etc/sounds/startup.ogaType=oneshotRemainAfterExit=yes[Install]WantedBy=sound.target</code></pre><p>名叫<code>startup-sound.service</code>。然后<code>sudo systemtctl enable startup-sound &amp;&amp; reboot</code>，发现一切正常，然后窃喜。</p><p>但是第二次启动就不对劲了，扬声器只是“砰”地响了一下，然后就没有任何反应。猜想是不是 pulseaudio 没有启动，于是写了下面这个，<code>pulseaudio.service</code>。</p><pre><code>[Unit]Description=Pulseaudio Automatic StartupRequires=alsa-restore.targetAfter=alsa-restore.target[Service]ExecStart=/usr/bin/pulseaudio --daemonizeType=forkingExecStop=/usr/bin/pulseaudio --kill[Install]WantedBy=sound.target</code></pre><p>并把上面那个Unit文件的 <code>Requires</code> 和 <code>After</code> 字段改成这个Unit文件。重新启动这两个服务，感觉一切正常。正当我疾呼“终于弄好了！”之时，这个东西又失效了。于是，我只有转换思路。</p><h2 id="Systemd-x2F-User"><a href="#Systemd-x2F-User" class="headerlink" title="Systemd&#x2F;User"></a>Systemd&#x2F;User</h2><p>systemd 有两种运行模式，一个是 <code>system</code> 模式，一个是 <code>user</code> 模式。<code>system</code> 模式管理整个系统，而 <code>user</code> 模式管理单个用户的登入&#x2F;登出事件。既然“全系统”开机音效不行，那“单用户”登陆音效总可以吧？</p><p>结果还是不行。到这里，我基本上已经放弃 systemd 了。可能是 systemd 的特殊机制导致 sox 无法访问声卡或是 pulseaudio 吧。</p><h2 id="shell-脚本法"><a href="#shell-脚本法" class="headerlink" title="shell 脚本法"></a>shell 脚本法</h2><p>既然 systemd 有特殊机制，那么，我们平常打命令的 shell 是不是可以呢？我用的是 fish，就在 <code>~/.config/fish/config.fish</code> 末尾加上了这么一行：<code>ExecStart=/usr/bin/play /etc/sounds/startup.oga</code>。然后，运行 fish。等等，<strong>运行 fish</strong>？</p><p>到这里我已经发现问题了：fish 的全称叫 “the <strong>f</strong>riendly <strong>i</strong>nteractive <strong>sh</strong>ell” 。从名字里可以看出，fish 主打的是 <strong>interactive</strong>，也就是我们在命令行上敲个 <code>fish</code> 然后回车，这种使用方式主要是防止与 bash 不兼容的问题。如果是这样的话，那就不是登陆音效了，是 shell 的欢迎音效。这不是我想要的效果。</p><p><del>不过欢迎音效也挺香的</del>。主要是 sox 在 fish 脚本里也不能输出音频。</p><h2 id="dwm-autostart"><a href="#dwm-autostart" class="headerlink" title="dwm-autostart"></a>dwm-autostart</h2><p>到这里我基本上放弃了。心想着，反正是一台老机器了，能用就行。直到有一天，我翻阅文件时看到了 dwm 的源代码目录。诶，dwm 不是有 autostart 的补丁吗？</p><p>在 <code>~/.dwm/autostart.sh</code> 脚本内添加这么一行：<code>ExecStart=/usr/bin/play /etc/sounds/startup.oga</code> ，然后重启 dwm，奇迹出现了！</p><p>“等等，等等”</p><p>经典 ubuntu LiveCD 开机音效了。不知为何，我第一次启动 ubuntu 的安装盘时，就觉得这个音效很炫酷，今天在 Arch 上又听到了这个，<del>真的很炫酷</del>。</p><p>用 Linux，就是在享受这个折腾的过程，正是在这个过程中，我学到了在用其他软件时得不到的东西。与 Linux 结识，也是我们之间的一种缘分吧。</p><blockquote><p>这是我的第一篇实际有意义的文章，<del>肯定存在水文章嫌疑</del>。如果你看到这个页面，有什么建议，欢迎向我发邮件。邮箱地址在“关于”页面，左上角。<br><del>话说也没有人看到这个吧</del></p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Hello World</title>
+      <link href="/2022/06/22/hello-world/"/>
+      <url>/2022/06/22/hello-world/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p></blockquote><p>Hello, world!<br>你好，世界！</p><h1 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h1><h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><h3 id="三级标题"><a href="#三级标题" class="headerlink" title="三级标题"></a>三级标题</h3><pre><code class="python">print(&#39;Hello  world&#39;)</code></pre><blockquote><p>这是一段被引用的话。</p></blockquote><ul><li>item1</li><li>item2</li><li>item3</li></ul><p><a href="https://dreamstart.rth7.com/">dreamstart小站</a></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+  
+  
+</search>
