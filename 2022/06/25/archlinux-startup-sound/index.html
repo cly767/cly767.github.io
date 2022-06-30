@@ -16,7 +16,7 @@
 <meta property="og:description" content="Arch Linux是一个高度可定制的Linux发行版。但是，高度的自定义性也带来了很多麻烦。 在我那台十八年神机上装好Arch、dwm之后的一天，我突发奇想：有没有可能让linux像Windows那样拥有开机音效呢？ 准备工作clone 一下这个：https:&#x2F;&#x2F;github.com&#x2F;ubuntu&#x2F;Yaru，复制 sounds&#x2F;src&#x2F;stereo&#x2F;desktop-">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-06-25T09:03:09.000Z">
-<meta property="article:modified_time" content="2022-06-28T10:34:45.731Z">
+<meta property="article:modified_time" content="2022-06-30T04:55:09.811Z">
 <meta property="article:author" content="Ben">
 <meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary">
@@ -597,7 +597,7 @@
 						
 						<div class="post-meta-detail post-meta-detail-time">
 							<i class="fa fa-clock-o" aria-hidden="true"></i>
-							<time title="发布于 2022-6-25 17:03:09 | 编辑于 2022-6-28 18:34:45">2022-6-25 17:03
+							<time title="发布于 2022-6-25 17:03:09 | 编辑于 2022-6-30 12:55:09">2022-6-25 17:03
 							</time>
 						</div>
 					
@@ -616,7 +616,7 @@
 						
 						<div class="post-meta-detail post-meta-detail-words">
 							<i class="fa fa-file-word-o" aria-hidden="true"></i>
-							954 字
+							951 字
 						</div>
 					
 						
@@ -667,7 +667,7 @@ WantedBy=sound.target
 <p>并把上面那个Unit文件的 <code>Requires</code> 和 <code>After</code> 字段改成这个Unit文件。重新启动这两个服务，感觉一切正常。正当我疾呼“终于弄好了！”之时，这个东西又失效了。于是，我只有转换思路。</p>
 <h2 id="Systemd-x2F-User"><a href="#Systemd-x2F-User" class="headerlink" title="Systemd&#x2F;User"></a>Systemd&#x2F;User</h2><p>systemd 有两种运行模式，一个是 <code>system</code> 模式，一个是 <code>user</code> 模式。<code>system</code> 模式管理整个系统，而 <code>user</code> 模式管理单个用户的登入&#x2F;登出事件。既然“全系统”开机音效不行，那“单用户”登陆音效总可以吧？</p>
 <p>结果还是不行。到这里，我基本上已经放弃 systemd 了。可能是 systemd 的特殊机制导致 sox 无法访问声卡或是 pulseaudio 吧。</p>
-<h2 id="shell-脚本法"><a href="#shell-脚本法" class="headerlink" title="shell 脚本法"></a>shell 脚本法</h2><p>既然 systemd 有特殊机制，那么，我们平常打命令的 shell 是不是可以呢？我用的是 fish，就在 <code>~/.config/fish/config.fish</code> 末尾加上了这么一行：<code>ExecStart=/usr/bin/play /etc/sounds/startup.oga</code>。然后，运行 fish。等等，<strong>运行 fish</strong>？</p>
+<h2 id="shell-脚本法"><a href="#shell-脚本法" class="headerlink" title="shell 脚本法"></a>shell 脚本法</h2><p>既然 systemd 有特殊机制，那么，我们平常打命令的 shell 是不是可以呢？我用的是 fish，就在 <code>~/.config/fish/config.fish</code> 末尾加上了这么一行：<code>play /etc/sounds/startup.oga</code>。然后，运行 fish。等等，<strong>运行 fish</strong>？</p>
 <p>到这里我已经发现问题了：fish 的全称叫 “the <strong>f</strong>riendly <strong>i</strong>nteractive <strong>sh</strong>ell” 。从名字里可以看出，fish 主打的是 <strong>interactive</strong>，也就是我们在命令行上敲个 <code>fish</code> 然后回车，这种使用方式主要是防止与 bash 不兼容的问题。如果是这样的话，那就不是登陆音效了，是 shell 的欢迎音效。这不是我想要的效果。</p>
 <p><del>不过欢迎音效也挺香的</del>。主要是 sox 在 fish 脚本里也不能输出音频。</p>
 <h2 id="dwm-autostart"><a href="#dwm-autostart" class="headerlink" title="dwm-autostart"></a>dwm-autostart</h2><p>到这里我基本上放弃了。心想着，反正是一台老机器了，能用就行。直到有一天，我翻阅文件时看到了 dwm 的源代码目录。诶，dwm 不是有 autostart 的补丁吗？</p>
