@@ -60,19 +60,19 @@
 
       <p class="links">
   
-    <a title="archives" target="" href="/archives">
+    <a title="归档" target="" href="/archives">
       <i class="iconfont icon-bookmark"></i>
     </a>
   
-    <a title="tags" target="" href="/tags">
-      <i class="iconfont icon-tags"></i>
+    <a title="关于" target="" href="/2022/06/22/about">
+      <i class="iconfont icon-emoji-friendly"></i>
     </a>
   
     <a title="github" target="_blank" href="https://github.com/cly767">
       <i class="iconfont icon-github"></i>
     </a>
   
-    <a title="rss" target="_blank" href="/atom.xml">
+    <a title="RSS订阅" target="_blank" href="/atom.xml">
       <i class="iconfont icon-rss"></i>
     </a>
   
@@ -84,7 +84,7 @@
 <!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
 
 <!-- LaTex Display -->
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
 </script>
 <script>
@@ -93,7 +93,7 @@
       inlineMath: [['$', '$'], ['\\(', '\\)']]
     }
   };
-</script>
+</script> -->
 
 <div class="post">
   <h3 class="date">
@@ -107,10 +107,10 @@
 <p>在我那台十八年神机上装好Arch、dwm之后的一天，我突发奇想：有没有可能让linux像Windows那样拥有开机音效呢？</p>
 <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>clone 一下这个：<a target="_blank" rel="noopener" href="https://github.com/ubuntu/Yaru">https://github.com/ubuntu/Yaru</a>，复制 sounds&#x2F;src&#x2F;stereo&#x2F;desktop-login.oga 到 &#x2F;etc&#x2F;sounds&#x2F;startup.oga。文件夹 <code>/etc/sounds</code> 需要自行创建。</p>
 <h2 id="Systemd-法"><a href="#Systemd-法" class="headerlink" title="Systemd 法"></a>Systemd 法</h2><p>想要让某个东西在 Linux 启动时跟着启动，那最好的方法就是你正在用的 init 程序。Arch 预装的是 systemd，然后就照着 Arch Wiki 上的教程写了个 Unit 文件。大概长这样：</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[Unit]</span><br><span class="hljs-attr">Description</span>=Play Startup Sound<br><span class="hljs-attr">Requires</span>=alsa-restore.service<br><span class="hljs-attr">After</span>=alsa-restore.service<br><br><span class="hljs-section">[Service]</span><br><span class="hljs-attr">ExecStart</span>=/usr/bin/play /etc/sounds/startup.oga<br><span class="hljs-attr">Type</span>=<span class="hljs-literal">on</span>eshot<br><span class="hljs-attr">RemainAfterExit</span>=<span class="hljs-literal">yes</span><br><br><span class="hljs-section">[Install]</span><br><span class="hljs-attr">WantedBy</span>=sound.target<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">[Unit]<br>Description=Play Startup Sound<br>Requires=alsa-restore.service<br>After=alsa-restore.service<br><br>[Service]<br>ExecStart=/usr/bin/play /etc/sounds/startup.oga<br>Type=oneshot<br>RemainAfterExit=yes<br><br>[Install]<br>WantedBy=sound.target<br></code></pre></td></tr></table></figure>
 <p>名叫<code>startup-sound.service</code>。然后<code>sudo systemtctl enable startup-sound &amp;&amp; reboot</code>，发现一切正常，然后窃喜。</p>
 <p>但是第二次启动就不对劲了，扬声器只是“砰”地响了一下，然后就没有任何反应。猜想是不是 pulseaudio 没有启动，于是写了下面这个，<code>pulseaudio.service</code>。</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[Unit]</span><br><span class="hljs-attr">Description</span>=Pulseaudio Automatic Startup<br><span class="hljs-attr">Requires</span>=alsa-restore.target<br><span class="hljs-attr">After</span>=alsa-restore.target<br><br><span class="hljs-section">[Service]</span><br><span class="hljs-attr">ExecStart</span>=/usr/bin/pulseaudio --daemonize<br><span class="hljs-attr">Type</span>=forking<br><span class="hljs-attr">ExecStop</span>=/usr/bin/pulseaudio --kill<br><br><span class="hljs-section">[Install]</span><br><span class="hljs-attr">WantedBy</span>=sound.target<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">[Unit]<br>Description=Pulseaudio Automatic Startup<br>Requires=alsa-restore.target<br>After=alsa-restore.target<br><br>[Service]<br>ExecStart=/usr/bin/pulseaudio --daemonize<br>Type=forking<br>ExecStop=/usr/bin/pulseaudio --kill<br><br>[Install]<br>WantedBy=sound.target<br></code></pre></td></tr></table></figure>
 <p>并把上面那个Unit文件的 <code>Requires</code> 和 <code>After</code> 字段改成这个Unit文件。重新启动这两个服务，感觉一切正常。正当我疾呼“终于弄好了！”之时，这个东西又失效了。于是，我只有转换思路。</p>
 <h2 id="Systemd-x2F-User"><a href="#Systemd-x2F-User" class="headerlink" title="Systemd&#x2F;User"></a>Systemd&#x2F;User</h2><p>systemd 有两种运行模式，一个是 <code>system</code> 模式，一个是 <code>user</code> 模式。<code>system</code> 模式管理整个系统，而 <code>user</code> 模式管理单个用户的登入&#x2F;登出事件。既然“全系统”开机音效不行，那“单用户”登陆音效总可以吧？</p>
 <p>结果还是不行。到这里，我基本上已经放弃 systemd 了。可能是 systemd 的特殊机制导致 sox 无法访问声卡或是 pulseaudio 吧。</p>
@@ -136,11 +136,12 @@
           
             
 </div>
+
         <div class="footer">
   
     <div class="footer-more">
       
-        <a href="/">Copyright © 影子 2023</a>
+        <a href="/">Copyleft © 影子 2023</a>
         
     </div>
   
