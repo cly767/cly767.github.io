@@ -4,11 +4,30 @@
   
     
     <entry>
+      <title>记 OBS 黑屏的一次经历</title>
+      <link href="/2023/10/03/%E8%AE%B0-OBS-%E9%BB%91%E5%B1%8F%E7%9A%84%E4%B8%80%E6%AC%A1%E7%BB%8F%E5%8E%86/"/>
+      <url>/2023/10/03/%E8%AE%B0-OBS-%E9%BB%91%E5%B1%8F%E7%9A%84%E4%B8%80%E6%AC%A1%E7%BB%8F%E5%8E%86/</url>
+      
+        <content type="html"><![CDATA[<p>最近有点怀念桌面环境了，就装了一个  GNOME 在我的电脑上。我有录屏的需求，一直用的是 OBS，于是我就装了一个 OBS。</p><p>还是老一套，添加源，选择“屏幕录制(PipeWire)”，选择要共享的监视器。欸？怎么黑屏了？</p><p>我在网上找了一下，有一些过去有效的解决方案，但是在我这里没有用。</p><h2 id="Wayland-or-X11"><a href="#Wayland-or-X11" class="headerlink" title="Wayland or X11?"></a>Wayland or X11?</h2><p>有很多人都说这是因为 OBS 运行在 Xwayland 下造成的。我打开一个终端，用 <code>xprop</code> 检查了一下，发现鼠标没有变成小十字，说明 OBS 是以 Wayland 运行的。加上参数 <code>-platform xcb</code> 之后，OBS 才以  Xwayland 运行，但是录制得到的屏幕仍然是黑的。用另外一个标有 “XSHM” 的源也是如此。</p><p>这就说明，黑屏不是 Xwayland 导致的。</p><h2 id="Pipewire-amp-WirePlumber"><a href="#Pipewire-amp-WirePlumber" class="headerlink" title="Pipewire &amp; WirePlumber"></a>Pipewire &amp; WirePlumber</h2><p>我用命令行启动 OBS 看到了这样的输出：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">...<br>info: [pipewire] Stream 0x55a07bfd4510 state: &quot;paused&quot; (error: none)<br>...<br></code></pre></td></tr></table></figure><p>恩？已暂停而没有错误？</p><p>注意到我选择源时名称里的 “PipeWire”了吗？我去 <a href="https://wiki.archlinux.org/title/PipeWire">Archwiki</a> 搜了一下，原文是这样说的：</p><blockquote><p>PipeWire implements no connection logic internally. </p></blockquote><p>然后我还看到了一些叫做 “Session Manager” 的东西。WirePlumber…唔…装一个试试？</p><p>还是不行。诶，等一下！</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">...<br>(2/2) 正在安装 wireplumber                         [####################] 100%<br>Created symlink /etc/systemd/user/pipewire-session-manager.service → /usr/lib/systemd/user/wireplumber.service.<br>Created symlink /etc/systemd/user/pipewire.service.wants/wireplumber.service → /usr/lib/systemd/user/wireplumber.service.<br>...<br></code></pre></td></tr></table></figure><p>看着路径好像是一个 systemd 用户单元。试试看吧：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">$ systemctl --user start wireplumber.service<br></code></pre></td></tr></table></figure><p>再打开 OBS，哇，终于好了！</p><p>所以了解一个桌面环境是如何工作的很重要。此外，多查查  Archwiki、留意命令行输出也很重要。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title></title>
       <link href="/2023/08/08/douyin/"/>
       <url>/2023/08/08/douyin/</url>
       
-        <content type="html"><![CDATA[<p>前几天，我和我弟，还有奶奶三个人出去吃串串。</p><p>发生了这么一件事：奶奶说她要拍下我们吃烤串的画面。她拿出手机，打开抖音，拍了起来。拍完之后，她就开始选音乐、加特效。弟弟几次三番劝她放下手机，但奶奶就是不听。</p><p>然后，我听到了奶奶刷短视频的声音。</p><p>还好，我弟一把抢过手机，把屏幕关掉，奶奶才回过神来。她的脸上，分明带着不高兴的神情————还有刷完短视频的人们通常有的那种漠然和空虚。</p><p>当时我说了一句话，“美好的生活是不需要记录的。”</p><hr><p>让我震惊的是，短视频对人们有如此强的吸引力，以至于上到七旬老人，下到两三岁小孩，都沉迷在这种十五秒一次的无意识的滑动中。</p><p>抖音也有一个“使用时间管理”，但这个功能藏在“我的”页面的一个二级菜单里，一般人根本注意不到。</p><p>他们只知道，打开抖音，就有无数的有趣视频可以看，尽管他们也不知道一连几个小时看这些视频有什么意义。</p><p>我的爸爸妈妈就是两个被抖音深深吸引的人，他们一回家就打开手机看抖音，连一句最简单的话话都不讲。</p><p>我没有能力对他们指手画脚。我只是感到深深的忧虑。</p>]]></content>
+        <content type="html"><![CDATA[<p>前几天，我和我弟，还有奶奶三个人出去吃串串。</p><p>发生了这么一件事：奶奶说她要拍下我们吃烤串的画面。她拿出手机，打开抖音，拍了起来。拍完之后，她就开始选音乐、加特效。弟弟几次三番劝她放下手机，但奶奶就是不听。</p><p>然后，我听到了奶奶刷短视频的声音。</p><p>还好，我弟一把抢过手机，把屏幕关掉，奶奶才回过神来。她的脸上，分明带着不高兴的神情————还有刷完短视频的人们通常有的那种漠然和空虚。</p><p>当时我说了一句话，“美好的生活是不需要记录的。”</p><hr><p>让我震惊的是，短视频对人们有如此强的吸引力，以至于上到七旬老人，下到两三岁小孩，都沉迷在这种十五秒一次的无意识的滑动中。</p><p>抖音也有一个“使用时间管理”，但这个功能藏在“我的”页面的一个二级菜单里，一般人根本注意不到。</p><p>他们只知道，打开抖音，就有无数的有趣视频可以看，尽管他们也不知道一连几个小时看这些视频有什么意义。</p><p>我的爸爸妈妈就是两个被抖音深深吸引的人，他们一回家就打开手机看抖音，连一句最简单的话都不讲。</p><p>我没有能力对他们指手画脚。我只是感到深深的忧虑。</p>]]></content>
       
       
       
@@ -67,7 +86,7 @@
       <link href="/2023/05/02/Interstellar/"/>
       <url>/2023/05/02/Interstellar/</url>
       
-        <content type="html"><![CDATA[<p>“Murphy’s law doesn’t mean taht something bad will happen. What it means is that whatever can happen will happen.”</p><p>“Love is one thing that transcends dimensions of time and space.”</p><p>“We used to look up in the sky and wonder our place in the stars. Now we just look down and worry at our place in the dirt.”</p><p>“We need to go well beyond the boundaries of our own existance. We can’t think as individuals.”</p><p>“Mankind was born on Earth. It was never meant to die there.”</p><p>“We’ll find a way; We always have.”</p><p>“Mankind is forced with the threat that it cannot survive.”</p><p>“Through it, we can break the limits of human ability and look for the opportunity to extend life in outer space.”</p>]]></content>
+        <content type="html"><![CDATA[<p>“Murphy’s law doesn’t mean that something bad will happen. What it means is that whatever can happen will happen.”</p><p>“Love is one thing that transcends dimensions of time and space.”</p><p>“We used to look up in the sky and wonder our place in the stars. Now we just look down and worry at our place in the dirt.”</p><p>“We need to go well beyond the boundaries of our own existence. We can’t think as individuals.”</p><p>“Mankind was born on Earth. It was never meant to die there.”</p><p>“We’ll find a way; We always have.”</p><p>“Mankind is forced with the threat that it cannot survive.”</p><p>“Through it, we can break the limits of human ability and look for the opportunity to extend life in outer space.”</p>]]></content>
       
       
       
@@ -124,7 +143,7 @@
       <link href="/2022/06/22/about/"/>
       <url>/2022/06/22/about/</url>
       
-        <content type="html"><![CDATA[<p>你好，陌生人。</p><h2 id="这个网站"><a href="#这个网站" class="headerlink" title="这个网站"></a>这个网站</h2><p>这是影子搭建的个人网站。</p><p>你能看到这个网站，也算我们的一种缘分。你能访问Github Pages，就足以证明这一点。</p><p>我会在这方独属于我的天地，与你分享我在数字生活和现实生活中的一些思考，以及经验与感悟。希望对你能有所帮助。</p><h2 id="它的名字"><a href="#它的名字" class="headerlink" title="它的名字"></a>它的名字</h2><p>多年前，我听过一首名叫《追光者》的歌曲。它是千万首歌曲中，极少数能拨动我心弦的。</p><blockquote><p>我可以跟在你身后<br>像影子追着光梦游<br>我可以等在这路口<br>不管你会不会经过<br>每当我为你抬起头<br>连眼泪都觉得自由<br>有的爱像阳光倾落<br>边拥有————边失去着</p></blockquote><p>你是不是也像影子，处在阴影中，孤独寂寞？</p><p>但是不要忘记，一直照亮你、陪伴你的，你向往的、你珍惜的，那道光。</p><h2 id="我"><a href="#我" class="headerlink" title="我"></a>我</h2><p>我是一名高中生。</p><p>我从很小的时候就开始接触电子产品，导致我近视很严重。我想做点有意义的事情，记录思考，记录生活。所以我创建了这里，独属于我的一方天地。</p><p>我对电子产品很感兴趣。如果不是这份兴趣，我不会近视到这种地步，但也不可能与你在这里相见。</p><p>如果你想认识我，你可以通过以下方式。</p><ul><li>电子邮件：<a href="mailto:chenliangyu01@126.com">chenliangyu01@126.com</a></li><li>哔哩哔哩：<a href="https://space.bilibili.com/1542268688">bili_73498558590</a></li><li>Github：<a href="https://github.com/cly767">cly767</a></li></ul><p>我可能不会及时回复，还请你谅解。</p><p>我会不定期更新博客和B站。或许不是很频繁，但我会坚持下去的。</p><p>那么，影子的故事，现在开始。你可以回到主页来看我最近的文章。</p>]]></content>
+        <content type="html"><![CDATA[<p>你好，陌生人。</p><h2 id="这个网站"><a href="#这个网站" class="headerlink" title="这个网站"></a>这个网站</h2><p>这是影子搭建的个人网站。</p><p>你能看到这个网站，也算我们的一种缘分。你能访问 Github Pages，就足以证明这一点。</p><p>我会在这方独属于我的天地，与你分享我在数字生活和现实生活中的一些思考，以及经验与感悟。希望对你能有所帮助。</p><h2 id="它的名字"><a href="#它的名字" class="headerlink" title="它的名字"></a>它的名字</h2><p>多年前，我听过一首名叫《追光者》的歌曲。它是千万首歌曲中，极少数能拨动我心弦的。</p><blockquote><p>我可以跟在你身后<br>像影子追着光梦游<br>我可以等在这路口<br>不管你会不会经过<br>每当我为你抬起头<br>连眼泪都觉得自由<br>有的爱像阳光倾落<br>边拥有————边失去着</p></blockquote><p>你是不是也像影子，躲在角落，孤独寂寞？</p><p>但是不要忘记，一直照亮你、陪伴你的，你向往的、你珍惜的，那道光。</p><h2 id="我"><a href="#我" class="headerlink" title="我"></a>我</h2><p>我是一名高中生。</p><p>我从很小的时候就开始接触电子产品，导致我近视很严重。我想做点有意义的事情，记录思考，记录生活。所以我创建了这里，独属于我的一方天地。</p><p>我对电子产品很感兴趣。如果不是这份兴趣，我不会近视到这种地步，但也不可能与你在这里相见。</p><p>如果你想认识我，你可以通过以下方式。</p><ul><li>电子邮件：<a href="mailto:chenliangyu01@126.com">chenliangyu01@126.com</a></li><li>哔哩哔哩：<a href="https://space.bilibili.com/1542268688">bili_73498558590</a></li><li>Github：<a href="https://github.com/cly767">cly767</a></li></ul><p>我可能不会及时回复，还请你谅解。</p><p>我会不定期更新博客和B站。或许不是很频繁，但我会坚持下去的。</p><p>那么，影子的故事，现在开始。你可以回到主页来看我最近的文章。</p>]]></content>
       
       
       
