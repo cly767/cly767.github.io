@@ -106,7 +106,7 @@
     <p>最近有点怀念桌面环境了，就装了一个  GNOME 在我的电脑上。我有录屏的需求，一直用的是 OBS，于是我就装了一个 OBS。</p>
 <p>还是老一套，添加源，选择“屏幕采集(PipeWire)”，选择要共享的监视器。欸？怎么黑屏了？</p>
 <p>我在网上找了一下，有一些过去有效的解决方案，但是在我这里没有用。</p>
-<h2 id="Wayland-or-X11"><a href="#Wayland-or-X11" class="headerlink" title="Wayland or X11?"></a>Wayland or X11?</h2><p>有很多人都说这是因为 OBS 运行在 Xwayland 下造成的。我打开一个终端，用 <code>xprop</code> 检查了一下，发现鼠标没有变成小十字，说明 OBS 是以 Wayland 运行的。加上参数 <code>-platform xcb</code> 之后，OBS 才以  Xwayland 运行，但是录制得到的屏幕仍然是黑的。用另外一个标有 “XSHM” 的源也是如此。</p>
+<h2 id="Wayland-or-X11"><a href="#Wayland-or-X11" class="headerlink" title="Wayland or X11?"></a>Wayland or X11?</h2><p>有很多人都说，这是因为 OBS 运行在 Xwayland 下。我打开一个终端，用 <code>xprop</code> 检查了一下，发现鼠标没有变成小十字，说明 OBS 是以 Wayland 运行的。加上参数 <code>-platform xcb</code> 之后，OBS 才以  Xwayland 运行，但是录制得到的屏幕仍然是黑的。用另外一个标有 “XSHM” 的源也是如此。</p>
 <p>这就说明，黑屏不是 Xwayland 导致的。</p>
 <h2 id="Pipewire-amp-WirePlumber"><a href="#Pipewire-amp-WirePlumber" class="headerlink" title="Pipewire &amp; WirePlumber"></a>Pipewire &amp; WirePlumber</h2><p>我用命令行启动 OBS 看到了这样的输出：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">...<br>info: [pipewire] Stream 0x55a07bfd4510 state: &quot;paused&quot; (error: none)<br>...<br></code></pre></td></tr></table></figure>
@@ -132,6 +132,8 @@
       <a id="older" class="blog-nav" href="../../../08/08/douyin/">OLDER&nbsp;&gt;</a>
       
         
+          <a id="newer" class="blog-nav" href="../../../11/01/%E6%9C%80%E5%88%9D%E7%9A%84%E7%BE%8E%E5%A5%BD/">&lt;&nbsp;NEWER</a>
+          
             
 </div>
 
@@ -139,7 +141,7 @@
   
     <div class="footer-more">
       
-        <a href="/">Copyleft © 影子 2023</a>
+        <a href="/">Copyleft © 影子 2022 - 2023</a>
         
     </div>
   

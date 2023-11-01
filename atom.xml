@@ -6,7 +6,7 @@
   <link href="https://cly767.github.io/atom.xml" rel="self"/>
   
   <link href="https://cly767.github.io/"/>
-  <updated>2023-10-03T08:21:09.785Z</updated>
+  <updated>2023-11-01T08:12:48.930Z</updated>
   <id>https://cly767.github.io/</id>
   
   <author>
@@ -17,13 +17,37 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>最初的美好</title>
+    <link href="https://cly767.github.io/2023/11/01/%E6%9C%80%E5%88%9D%E7%9A%84%E7%BE%8E%E5%A5%BD/"/>
+    <id>https://cly767.github.io/2023/11/01/%E6%9C%80%E5%88%9D%E7%9A%84%E7%BE%8E%E5%A5%BD/</id>
+    <published>2023-11-01T08:11:15.000Z</published>
+    <updated>2023-11-01T08:12:48.930Z</updated>
+    
+    <content type="html"><![CDATA[<p>今天是月假，匆忙中写下了这篇文章。其实在学校就有想写这件事的冲动，但由于种种原因没能实现。</p><p>两个多星期前，我们上了一节语文晚自习。那时我们班的电脑坏掉了，老师本来准备用视频展台展示同学们的作文优秀语段，结果只好让同学们自己朗读。</p><p>这下好了，教室里瞬间乱成了一锅粥：被老师点起来朗读的同学一个个“面红耳赤”；“吃瓜群众”们不时向老师推荐下一个“幸运儿”；遇到好的语段，同学们也会热烈地讨论，老师也会参与其中：空气中洋溢着快活的气息——而这，在我们教室里极少出现。</p><p>这是否与老师没有使用视频展台有关系？</p><p>试想，如果使用视频展台，整个过程就变成了枯燥的讲解，没有了同学们绘声绘色的朗读声；那些想要讨论的同学，也会被教室里肃静的气氛劝退。似乎，视频展台成了阻碍同学们自由讨论的东西。</p><hr><p>我不由得回想起生活中种种新旧的交替。</p><p>在望不到头的公路上，伴着引擎的轰鸣和车身的微振，路边的景色从眼前掠过——这应该是我想象中自驾游的理想境界。然而，电动汽车都是线性加速，行驶更是悄无声息，使得整个旅途单调和枯燥了许多。</p><p>即时消息和短视频取代了书信和传统电视，我们的生活也因此丰富多彩。但是，墨水沾在纸上的温度，剧集终于上映的惊喜与激动，却一去不复返。</p><p>或许你会说我恋旧，会说我思想保守、不进取。适当的技术进步是好的，但是，当它们开始淡化个人独特的情感体验时，我们是否应该重新审视这种进步？</p><hr><p>近几年一直感觉周围的世界在加速，“快点！”成了很多人的口头禅。因为动作慢，我已经和老师和父母发生过几次不和。</p><p>就在写这篇博客时，母亲进了我的房间，扔下一句“快点写完出来吃饭！”就出去了。其时还有两个小时就要上学，而昨天上午十点钟才放假。</p><p>而在我的记忆中，在几年前，没有这种加速度，世界以它自己的速度运行着，一切都是有条不紊。</p><p>是我的内心在减速，还是周围的世界在加速？</p><p>如果我们处处追求速度，生活的诗意将何去何从？最初的美好，又何处安放？</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;今天是月假，匆忙中写下了这篇文章。其实在学校就有想写这件事的冲动，但由于种种原因没能实现。&lt;/p&gt;
+&lt;p&gt;两个多星期前，我们上了一节语文晚自习。那时我们班的电脑坏掉了，老师本来准备用视频展台展示同学们的作文优秀语段，结果只好让同学们自己朗读。&lt;/p&gt;
+&lt;p&gt;这下好了，教室里</summary>
+      
+    
+    
+    
+    
+    <category term="杂谈" scheme="https://cly767.github.io/tags/%E6%9D%82%E8%B0%88/"/>
+    
+  </entry>
+  
+  <entry>
     <title>记 OBS 黑屏的一次经历</title>
     <link href="https://cly767.github.io/2023/10/03/%E8%AE%B0-OBS-%E9%BB%91%E5%B1%8F%E7%9A%84%E4%B8%80%E6%AC%A1%E7%BB%8F%E5%8E%86/"/>
     <id>https://cly767.github.io/2023/10/03/%E8%AE%B0-OBS-%E9%BB%91%E5%B1%8F%E7%9A%84%E4%B8%80%E6%AC%A1%E7%BB%8F%E5%8E%86/</id>
     <published>2023-10-03T07:40:29.000Z</published>
-    <updated>2023-10-03T08:21:09.785Z</updated>
+    <updated>2023-10-13T16:24:55.644Z</updated>
     
-    <content type="html"><![CDATA[<p>最近有点怀念桌面环境了，就装了一个  GNOME 在我的电脑上。我有录屏的需求，一直用的是 OBS，于是我就装了一个 OBS。</p><p>还是老一套，添加源，选择“屏幕采集(PipeWire)”，选择要共享的监视器。欸？怎么黑屏了？</p><p>我在网上找了一下，有一些过去有效的解决方案，但是在我这里没有用。</p><h2 id="Wayland-or-X11"><a href="#Wayland-or-X11" class="headerlink" title="Wayland or X11?"></a>Wayland or X11?</h2><p>有很多人都说这是因为 OBS 运行在 Xwayland 下造成的。我打开一个终端，用 <code>xprop</code> 检查了一下，发现鼠标没有变成小十字，说明 OBS 是以 Wayland 运行的。加上参数 <code>-platform xcb</code> 之后，OBS 才以  Xwayland 运行，但是录制得到的屏幕仍然是黑的。用另外一个标有 “XSHM” 的源也是如此。</p><p>这就说明，黑屏不是 Xwayland 导致的。</p><h2 id="Pipewire-amp-WirePlumber"><a href="#Pipewire-amp-WirePlumber" class="headerlink" title="Pipewire &amp; WirePlumber"></a>Pipewire &amp; WirePlumber</h2><p>我用命令行启动 OBS 看到了这样的输出：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">...<br>info: [pipewire] Stream 0x55a07bfd4510 state: &quot;paused&quot; (error: none)<br>...<br></code></pre></td></tr></table></figure><p>恩？已暂停而没有错误？</p><p>注意到我选择源时名称里的 “PipeWire”了吗？我去 <a href="https://wiki.archlinux.org/title/PipeWire">Archwiki</a> 搜了一下，原文是这样说的：</p><blockquote><p>PipeWire implements no connection logic internally. </p></blockquote><p>然后我还看到了一些叫做 “Session Manager” 的东西。WirePlumber…唔…装一个试试？</p><p>还是不行。诶，等一下！</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">...<br>(2/2) 正在安装 wireplumber                         [####################] 100%<br>Created symlink /etc/systemd/user/pipewire-session-manager.service → /usr/lib/systemd/user/wireplumber.service.<br>Created symlink /etc/systemd/user/pipewire.service.wants/wireplumber.service → /usr/lib/systemd/user/wireplumber.service.<br>...<br></code></pre></td></tr></table></figure><p>看着路径好像是一个 systemd 用户单元。试试看吧：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">$ systemctl --user start wireplumber.service<br></code></pre></td></tr></table></figure><p>再打开 OBS，哇，终于好了！</p><p>所以了解一个桌面环境是如何工作的很重要。此外，多查查  Archwiki、留意命令行输出也很重要。</p>]]></content>
+    <content type="html"><![CDATA[<p>最近有点怀念桌面环境了，就装了一个  GNOME 在我的电脑上。我有录屏的需求，一直用的是 OBS，于是我就装了一个 OBS。</p><p>还是老一套，添加源，选择“屏幕采集(PipeWire)”，选择要共享的监视器。欸？怎么黑屏了？</p><p>我在网上找了一下，有一些过去有效的解决方案，但是在我这里没有用。</p><h2 id="Wayland-or-X11"><a href="#Wayland-or-X11" class="headerlink" title="Wayland or X11?"></a>Wayland or X11?</h2><p>有很多人都说，这是因为 OBS 运行在 Xwayland 下。我打开一个终端，用 <code>xprop</code> 检查了一下，发现鼠标没有变成小十字，说明 OBS 是以 Wayland 运行的。加上参数 <code>-platform xcb</code> 之后，OBS 才以  Xwayland 运行，但是录制得到的屏幕仍然是黑的。用另外一个标有 “XSHM” 的源也是如此。</p><p>这就说明，黑屏不是 Xwayland 导致的。</p><h2 id="Pipewire-amp-WirePlumber"><a href="#Pipewire-amp-WirePlumber" class="headerlink" title="Pipewire &amp; WirePlumber"></a>Pipewire &amp; WirePlumber</h2><p>我用命令行启动 OBS 看到了这样的输出：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">...<br>info: [pipewire] Stream 0x55a07bfd4510 state: &quot;paused&quot; (error: none)<br>...<br></code></pre></td></tr></table></figure><p>恩？已暂停而没有错误？</p><p>注意到我选择源时名称里的 “PipeWire”了吗？我去 <a href="https://wiki.archlinux.org/title/PipeWire">Archwiki</a> 搜了一下，原文是这样说的：</p><blockquote><p>PipeWire implements no connection logic internally. </p></blockquote><p>然后我还看到了一些叫做 “Session Manager” 的东西。WirePlumber…唔…装一个试试？</p><p>还是不行。诶，等一下！</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">...<br>(2/2) 正在安装 wireplumber                         [####################] 100%<br>Created symlink /etc/systemd/user/pipewire-session-manager.service → /usr/lib/systemd/user/wireplumber.service.<br>Created symlink /etc/systemd/user/pipewire.service.wants/wireplumber.service → /usr/lib/systemd/user/wireplumber.service.<br>...<br></code></pre></td></tr></table></figure><p>看着路径好像是一个 systemd 用户单元。试试看吧：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">$ systemctl --user start wireplumber.service<br></code></pre></td></tr></table></figure><p>再打开 OBS，哇，终于好了！</p><p>所以了解一个桌面环境是如何工作的很重要。此外，多查查  Archwiki、留意命令行输出也很重要。</p>]]></content>
     
     
       
