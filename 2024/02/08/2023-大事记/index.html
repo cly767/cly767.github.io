@@ -11,7 +11,7 @@
   
   <title>
     
-      Archives 
+      2023 大事记 
       
       
     
@@ -30,6 +30,10 @@
 
 
   
+
+  
+    
+<link rel="stylesheet" href="../../../../css/post.css">
 
   
 
@@ -76,157 +80,51 @@
 
 
       <div class="main">
-        <!-- 归档页，展示本站所有文章，按照年份降序归类，url形式：https://yoursite/archives/ -->
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
 
-<!-- last: 按年份把文章分组，当前遍历到的年份 -->
-<!-- now: 当前遍历到的文章的发布年份 -->
+<!-- LaTex Display -->
+<!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script> -->
 
-<div class="container archives">
-  <div class="post-list">
-    
-        <!-- 后续文章的发布年份呈现 -->
-        <div class="content-title">
-          <h2>
-            <span>2024</span>
-          </h2>
-        </div>
-      
-      <div class="post-item" title="2023 大事记">
-        <div class="time-m-d">02-08</div>
-        <div class="title">
-          <a href="../../../2024/02/08/2023-%E5%A4%A7%E4%BA%8B%E8%AE%B0/">
-            
-              <span>2023 大事记</span>
-            
-          </a>
-        </div>
-      </div>
-    
-        <!-- 后续文章的发布年份呈现 -->
-        <div class="content-title">
-          <h2>
-            <span>2023</span>
-          </h2>
-        </div>
-      
-      <div class="post-item" title="最初的美好">
-        <div class="time-m-d">11-01</div>
-        <div class="title">
-          <a href="../../../2023/11/01/%E6%9C%80%E5%88%9D%E7%9A%84%E7%BE%8E%E5%A5%BD/">
-            
-              <span>最初的美好</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="记 OBS 黑屏的一次经历">
-        <div class="time-m-d">10-03</div>
-        <div class="title">
-          <a href="../../../2023/10/03/%E8%AE%B0-OBS-%E9%BB%91%E5%B1%8F%E7%9A%84%E4%B8%80%E6%AC%A1%E7%BB%8F%E5%8E%86/">
-            
-              <span>记 OBS 黑屏的一次经历</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="">
-        <div class="time-m-d">08-08</div>
-        <div class="title">
-          <a href="../../../2023/08/08/short-video/">
-            
-              <span>untitled</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="">
-        <div class="time-m-d">08-08</div>
-        <div class="title">
-          <a href="../../../2023/08/08/FM/">
-            
-              <span>untitled</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="少即是多">
-        <div class="time-m-d">08-04</div>
-        <div class="title">
-          <a href="../../../2023/08/04/%E5%B0%91%E5%8D%B3%E6%98%AF%E5%A4%9A/">
-            
-              <span>少即是多</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="Excerpts from Interstellar">
-        <div class="time-m-d">05-02</div>
-        <div class="title">
-          <a href="../../../2023/05/02/Interstellar/">
-            
-              <span>Excerpts from Interstellar</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="研学日记">
-        <div class="time-m-d">05-01</div>
-        <div class="title">
-          <a href="../../../2023/05/01/%E7%A0%94%E5%AD%A6%E6%97%A5%E8%AE%B0/">
-            
-              <span>研学日记</span>
-            
-          </a>
-        </div>
-      </div>
-    
-        <!-- 后续文章的发布年份呈现 -->
-        <div class="content-title">
-          <h2>
-            <span>2022</span>
-          </h2>
-        </div>
-      
-      <div class="post-item" title="Archlinux 启用开机音效">
-        <div class="time-m-d">06-25</div>
-        <div class="title">
-          <a href="../../../2022/06/25/archlinux-startup-sound/">
-            
-              <span>Archlinux 启用开机音效</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="About">
-        <div class="time-m-d">06-22</div>
-        <div class="title">
-          <a href="../../../2022/06/22/about/">
-            
-              <span>About</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="Hello World">
-        <div class="time-m-d">06-22</div>
-        <div class="title">
-          <a href="../../../2022/06/22/hello-world/">
-            
-              <span>Hello World</span>
-            
-          </a>
-        </div>
-      </div>
-    
+<div class="post">
+  <h3 class="date">
+    Feb 08, 2024
+  </h3>
+  <h1>
+    2023 大事记
+  </h1>
+  <div class="content markdown-body">
+    <p>真是忙碌的一年啊。别来可无恙？</p>
+<h2 id="四月：研学旅行"><a href="#四月：研学旅行" class="headerlink" title="四月：研学旅行"></a>四月：研学旅行</h2><p>第一次独自（和同学们）出远门。留下了许多照片，包括我现在的壁纸。可惜 Github 有存储限制，哪天自己建站了再放上来。</p>
+<h2 id="五月：卸任电教委"><a href="#五月：卸任电教委" class="headerlink" title="五月：卸任电教委"></a>五月：卸任电教委</h2><p>从小学四年级到高中一年级，算来也有六年时间了。积累了一些白板维护的经验。我的第一个电子邮箱就是在小学教室的电脑上注册的。</p>
+<h2 id="六月——七月：博客重启"><a href="#六月——七月：博客重启" class="headerlink" title="六月——七月：博客重启"></a>六月——七月：博客重启</h2><p>一次新生。我的态度转变了，从初建时的好玩和尝鲜，到现在的记录生活、倾诉心声，以及分享一个少年的不成熟的思考。</p>
+<h2 id="八月：pam-blueauth"><a href="#八月：pam-blueauth" class="headerlink" title="八月：pam_blueauth"></a>八月：<code>pam_blueauth</code></h2><p>这个项目的目标是为 GNU&#x2F;Linux 带来通过蓝牙可穿戴设备认证的能力。只来得及把基本框架构思出来，因为学业繁重，我的暑假只有十几天。</p>
+<h2 id="九月：校庆"><a href="#九月：校庆" class="headerlink" title="九月：校庆"></a>九月：校庆</h2><p>我还能说什么呢……校庆当天下雨，整场活动可以用“混乱不堪”来形容。</p>
+<h2 id="十月：切换发行版"><a href="#十月：切换发行版" class="headerlink" title="十月：切换发行版"></a>十月：切换发行版</h2><p>终于从 Arch Linux 换到了 Fedora Linux (Workstation Edition)。目前的版本是 39 。放寒假之后，我会写一篇文章记录这事。</p>
+<h2 id="十一月：运动会，肺炎支原体肺炎"><a href="#十一月：运动会，肺炎支原体肺炎" class="headerlink" title="十一月：运动会，肺炎支原体肺炎"></a>十一月：运动会，肺炎支原体肺炎</h2><p>这是高中的第二次运动会。期间本来想学五笔，结果连拆字都不会。</p>
+<p>这个月，我经历了一次严重的肺炎支原体肺炎。输了一星期液，才渐渐好转。咳嗽持续到现在。</p>
+<h2 id="十二月"><a href="#十二月" class="headerlink" title="十二月"></a>十二月</h2><p>最近冒出了好多新的点子……比如 <code>son</code> ，以及 <code>wordwarrior</code> 。奈何，学业繁重 ，这些只好留在以后有时间再实现了。</p>
+<p>我们班举行了元旦晚会。气氛是热气腾腾的，我也因为来回为两个班调试多媒体设备而大汗淋漓。</p>
+<p>印象比较深的一首歌是《Betty》。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>我的文笔真的不好，感谢你能看到这里。</p>
+<p>那么，送上我最诚挚的祝福：春节快乐！</p>
+
   </div>
+  
+    
+      <a id="older" class="blog-nav" href="../../../../2023/11/01/%E6%9C%80%E5%88%9D%E7%9A%84%E7%BE%8E%E5%A5%BD/">OLDER&nbsp;&gt;</a>
+      
+        
+            
 </div>
 
         <div class="footer">
