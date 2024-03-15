@@ -11,7 +11,9 @@
   
   <title>
     
-      影子
+      Category 
+      
+       : 站务
     
   </title>
 
@@ -22,16 +24,12 @@
 
   <!-- hexo site css -->
   
-<link rel="stylesheet" href="../../../../css/base.css">
-<link rel="stylesheet" href="../../../../css/common.css">
-<link rel="stylesheet" href="../../../../iconfont/iconfont.css">
+<link rel="stylesheet" href="../../css/base.css">
+<link rel="stylesheet" href="../../css/common.css">
+<link rel="stylesheet" href="../../iconfont/iconfont.css">
 
 
   
-
-  
-    
-<link rel="stylesheet" href="../../../../css/post.css">
 
   
 
@@ -42,10 +40,10 @@
   <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
   <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
   
-<script src="../../../../js/fancybox.js"></script>
+<script src="../../js/fancybox.js"></script>
 
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="atom.xml" title="影子" type="application/atom+xml">
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="atom.xml" title="影子" type="application/atom+xml">
 </head>
 
 
@@ -78,44 +76,179 @@
 
 
       <div class="main">
-        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
-<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+        <!-- 归档页，展示本站所有文章，按照年份降序归类，url形式：https://yoursite/archives/ -->
 
-<!-- LaTex Display -->
-<!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
-</script>
-<script>
-  MathJax = {
-    tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']]
-    }
-  };
-</script> -->
+<!-- last: 按年份把文章分组，当前遍历到的年份 -->
+<!-- now: 当前遍历到的文章的发布年份 -->
 
-<div class="post">
-  <h3 class="date">
-    Aug 08, 2023
-  </h3>
-  <h1>
+<div class="container archives">
+  <div class="post-list">
     
-  </h1>
-  <div class="content markdown-body">
-    <p>FM 广播真的很神奇。</p>
-<p>有无数人在听同一个电台，却绝不会有卡顿，也没有延迟。</p>
-<p>像这种广播都是单向广播，你只能听，不能说。这反倒成了当今这个信息爆炸的时代的一种小小的奢侈了————不用唇枪舌剑，只要安静地听就好。</p>
-<p>这也省去了面对五花八门的网络内容时的手足无措。并且，也不存在“信息茧房”的问题。</p>
-<p>还有，收音机的续航特别长，听一整个下午都没有问题————再搭上冰西瓜和电风扇，就是一个完美的夏日午后。</p>
-
-  </div>
-  
-    
-      <a id="older" class="blog-nav" href="../../04/%E5%B0%91%E5%8D%B3%E6%98%AF%E5%A4%9A/">OLDER&nbsp;&gt;</a>
+        <!-- 后续文章的发布年份呈现 -->
+        <div class="content-title">
+          <h2>
+            <span>2024</span>
+          </h2>
+        </div>
       
-        
-          <a id="newer" class="blog-nav" href="../short-video/">&lt;&nbsp;NEWER</a>
-          
+      <div class="post-item" title="日记">
+        <div class="time-m-d">03-15</div>
+        <div class="title">
+          <a href="../../2024/03/15/%E6%97%A5%E8%AE%B0-1/">
             
+              <span>日记</span>
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="风">
+        <div class="time-m-d">03-08</div>
+        <div class="title">
+          <a href="../../2024/03/08/%E9%A3%8E/">
+            
+              <span>风</span>
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="想起那个人的时候">
+        <div class="time-m-d">03-01</div>
+        <div class="title">
+          <a href="../../2024/03/01/%E6%83%B3%E8%B5%B7%E9%82%A3%E4%B8%AA%E4%BA%BA%E7%9A%84%E6%97%B6%E5%80%99/">
+            
+              <span>想起那个人的时候</span>
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="2023 大事记">
+        <div class="time-m-d">02-08</div>
+        <div class="title">
+          <a href="../../2024/02/08/2023-%E5%A4%A7%E4%BA%8B%E8%AE%B0/">
+            
+              <span>2023 大事记</span>
+            
+          </a>
+        </div>
+      </div>
+    
+        <!-- 后续文章的发布年份呈现 -->
+        <div class="content-title">
+          <h2>
+            <span>2023</span>
+          </h2>
+        </div>
+      
+      <div class="post-item" title="最初的美好">
+        <div class="time-m-d">11-14</div>
+        <div class="title">
+          <a href="../../2023/11/14/%E6%9C%80%E5%88%9D%E7%9A%84%E7%BE%8E%E5%A5%BD/">
+            
+              <span>最初的美好</span>
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="记 OBS 黑屏的一次经历">
+        <div class="time-m-d">10-31</div>
+        <div class="title">
+          <a href="../../2023/10/31/%E8%AE%B0-OBS-%E9%BB%91%E5%B1%8F%E7%9A%84%E4%B8%80%E6%AC%A1%E7%BB%8F%E5%8E%86/">
+            
+              <span>记 OBS 黑屏的一次经历</span>
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="日记">
+        <div class="time-m-d">08-08</div>
+        <div class="title">
+          <a href="../../2023/08/08/%E6%97%A5%E8%AE%B0/">
+            
+              <span>日记</span>
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="少即是多">
+        <div class="time-m-d">08-04</div>
+        <div class="title">
+          <a href="../../2023/08/04/%E5%B0%91%E5%8D%B3%E6%98%AF%E5%A4%9A/">
+            
+              <span>少即是多</span>
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="Excerpts from Interstellar">
+        <div class="time-m-d">05-02</div>
+        <div class="title">
+          <a href="../../2023/05/02/Interstellar/">
+            
+              <span>Excerpts from Interstellar</span>
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="研学日记">
+        <div class="time-m-d">05-01</div>
+        <div class="title">
+          <a href="../../2023/05/01/%E7%A0%94%E5%AD%A6%E6%97%A5%E8%AE%B0/">
+            
+              <span>研学日记</span>
+            
+          </a>
+        </div>
+      </div>
+    
+        <!-- 后续文章的发布年份呈现 -->
+        <div class="content-title">
+          <h2>
+            <span>2022</span>
+          </h2>
+        </div>
+      
+      <div class="post-item" title="Archlinux 启用开机音效">
+        <div class="time-m-d">06-25</div>
+        <div class="title">
+          <a href="../../2022/06/25/archlinux-startup-sound/">
+            
+              <span>Archlinux 启用开机音效</span>
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="About">
+        <div class="time-m-d">06-22</div>
+        <div class="title">
+          <a href="../../2022/06/22/about/">
+            
+              <span>About</span>
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="Hello World">
+        <div class="time-m-d">06-22</div>
+        <div class="title">
+          <a href="../../2022/06/22/hello-world/">
+            
+              <span>Hello World</span>
+            
+          </a>
+        </div>
+      </div>
+    
+  </div>
 </div>
 
         <div class="footer">
@@ -143,7 +276,7 @@
 </div>
 
 
-<script src="../../../../js/backtotop.js"></script>
+<script src="../../js/backtotop.js"></script>
 
 
 
