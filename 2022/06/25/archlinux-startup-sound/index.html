@@ -1,116 +1,77 @@
-<!DOCTYPE html>
-<html lang="zh_CN">
+<!doctype html>
+<html lang='zh_CN'>
+	<head>
+	<title>
+		
+			Archlinux 启用开机音效 | 影子
+		
+	</title>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width"/>
+	<!-- Roboto from Google Fonts -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Roboto+Mono"/>
 
-  <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="keywords" content="" />
-  <meta name="author" content="影子" />
-  <meta name="description" content="影子的博客" />
-  
-  
-  <title>
-    
-      Archlinux 启用开机音效 
-      
-      
-    
-  </title>
+	<link rel="stylesheet" href="/css/base.css"/>
+	<link rel="stylesheet" href="/css/dark.css"/>
+	
+	<link rel="stylesheet" href="/css/post.css"/>
+	
 
-  
-
-  <!-- Raleway-Font -->
-  <link href="https://fonts.googleapis.com/css?family=Montserrat|Roboto:400,400italic,600|Roboto+Mono" rel="stylesheet">
-
-  <!-- hexo site css -->
-  
-<link rel="stylesheet" href="../../../../css/base.css">
-<link rel="stylesheet" href="../../../../css/common.css">
-<link rel="stylesheet" href="../../../../iconfont/iconfont.css">
-
-
-  
-
-  
-    
-<link rel="stylesheet" href="../../../../css/post.css">
-
-  
-
-  <!-- jquery3.3.1 -->
-  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-
-  <!-- fancybox -->
-  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
-  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
-  
-<script src="../../../../js/fancybox.js"></script>
-
-
-<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="atom.xml" title="影子" type="application/atom+xml">
+	<link rel="prefetch" href="/js/navigation.js"/>
+	<link rel="prefetch" href="/js/anchor.js"/>
+	
+	<link rel="prefetch" href="/js/copyCode.js"/>
+	
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="atom.xml" title="影子" type="application/atom+xml">
 </head>
 
+	<body>
+		<div id='pageContainer'>
+			<div class='wrapper'>
+				<header id="header">
+	<div class="titleWrapper">
+		<h1 class="title">
+			
+				Archlinux 启用开机音效
+			
+		</h1>
+		
+		<div class="date">Jun 25, 2022</div>
+		
+	</div>
+	<div class="separator"></div>
+	<button id="navigationToggle" aria-label="Activate this to toggle navigation. 激活此按钮以切换站点导航。"></button>
+</header>
 
-  <body>
-    <div id="app">
-      <div class="header">
-  <a href="/">像影子追着光梦游</a>
-</div>
+				<main>
+	<nav id="navigation">
+	<ul id="siteLinks">
+		
+		<li class="prepared"><a href="/">Home</a></li>
+		
+		<li class="prepared"><a href="/about/">About</a></li>
+		
+		<li class="prepared"><a href="https://github.com/cly767" target="_blank">Github</a></li>
+		
+	</ul>
+	<ul id="notes">
+		
+		<li class="prepared"><a href="https://github.com/cly767/subway" target="_blank">Theme by subway.</a> | </li>
+		
+		<li class="prepared"><a href="https://hexo.io" target="_blank">Powered by Hexo.</a></li>
+		
+	</ul>
+</nav>
 
-
-      <p class="links">
-  
-    <a title="归档" target="" href="/archives">
-      <i class="iconfont icon-bookmark"></i>
-    </a>
-  
-    <a title="关于" target="" href="/2022/06/22/about">
-      <i class="iconfont icon-emoji-friendly"></i>
-    </a>
-  
-    <a title="github" target="_blank" href="https://github.com/cly767">
-      <i class="iconfont icon-github"></i>
-    </a>
-  
-    <a title="RSS订阅" target="_blank" href="/atom.xml">
-      <i class="iconfont icon-rss"></i>
-    </a>
-  
-</p>
-
-
-      <div class="main">
-        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
-<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
-
-<!-- LaTex Display -->
-<!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
-</script>
-<script>
-  MathJax = {
-    tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']]
-    }
-  };
-</script> -->
-
-<div class="post">
-  <h3 class="date">
-    Jun 25, 2022
-  </h3>
-  <h1>
-    Archlinux 启用开机音效
-  </h1>
-  <div class="content markdown-body">
-    <p>Arch Linux是一个高度可定制的Linux发行版。但是，高度的自定义性也带来了很多麻烦。</p>
+	<article id="contents">
+		<p>Arch Linux是一个高度可定制的Linux发行版。但是，高度的自定义性也带来了很多麻烦。</p>
 <p>在我那台十八年神机上装好Arch、dwm之后的一天，我突发奇想：有没有可能让linux像Windows那样拥有开机音效呢？</p>
 <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>clone 一下这个：<a target="_blank" rel="noopener" href="https://github.com/ubuntu/Yaru">https://github.com/ubuntu/Yaru</a>，复制 sounds&#x2F;src&#x2F;stereo&#x2F;desktop-login.oga 到 &#x2F;etc&#x2F;sounds&#x2F;startup.oga。文件夹 <code>/etc/sounds</code> 需要自行创建。</p>
 <h2 id="Systemd-法"><a href="#Systemd-法" class="headerlink" title="Systemd 法"></a>Systemd 法</h2><p>想要让某个东西在 Linux 启动时跟着启动，那最好的方法就是你正在用的 init 程序。Arch 预装的是 systemd，然后就照着 Arch Wiki 上的教程写了个 Unit 文件。大概长这样：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">[Unit]<br>Description=Play Startup Sound<br>Requires=alsa-restore.service<br>After=alsa-restore.service<br><br>[Service]<br>ExecStart=/usr/bin/play /etc/sounds/startup.oga<br>Type=oneshot<br>RemainAfterExit=yes<br><br>[Install]<br>WantedBy=sound.target<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Play Startup Sound</span><br><span class="line">Requires=alsa-restore.service</span><br><span class="line">After=alsa-restore.service</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">ExecStart=/usr/bin/play /etc/sounds/startup.oga</span><br><span class="line">Type=oneshot</span><br><span class="line">RemainAfterExit=yes</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=sound.target</span><br></pre></td></tr></table></figure>
 <p>名叫<code>startup-sound.service</code>。然后<code>sudo systemtctl enable startup-sound &amp;&amp; reboot</code>，发现一切正常，然后窃喜。</p>
 <p>但是第二次启动就不对劲了，扬声器只是“砰”地响了一下，然后就没有任何反应。猜想是不是 pulseaudio 没有启动，于是写了下面这个，<code>pulseaudio.service</code>。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">[Unit]<br>Description=Pulseaudio Automatic Startup<br>Requires=alsa-restore.target<br>After=alsa-restore.target<br><br>[Service]<br>ExecStart=/usr/bin/pulseaudio --daemonize<br>Type=forking<br>ExecStop=/usr/bin/pulseaudio --kill<br><br>[Install]<br>WantedBy=sound.target<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Pulseaudio Automatic Startup</span><br><span class="line">Requires=alsa-restore.target</span><br><span class="line">After=alsa-restore.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">ExecStart=/usr/bin/pulseaudio --daemonize</span><br><span class="line">Type=forking</span><br><span class="line">ExecStop=/usr/bin/pulseaudio --kill</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=sound.target</span><br></pre></td></tr></table></figure>
 <p>并把上面那个Unit文件的 <code>Requires</code> 和 <code>After</code> 字段改成这个Unit文件。重新启动这两个服务，感觉一切正常。正当我疾呼“终于弄好了！”之时，这个东西又失效了。于是，我只有转换思路。</p>
 <h2 id="Systemd-x2F-User"><a href="#Systemd-x2F-User" class="headerlink" title="Systemd&#x2F;User"></a>Systemd&#x2F;User</h2><p>systemd 有两种运行模式，一个是 <code>system</code> 模式，一个是 <code>user</code> 模式。<code>system</code> 模式管理整个系统，而 <code>user</code> 模式管理单个用户的登入&#x2F;登出事件。既然“全系统”开机音效不行，那“单用户”登陆音效总可以吧？</p>
 <p>结果还是不行。到这里，我基本上已经放弃 systemd 了。可能是 systemd 的特殊机制导致 sox 无法访问声卡或是 pulseaudio 吧。</p>
@@ -126,243 +87,14 @@
 <p>这是我的第一篇实际有意义的文章，<del>肯定存在水文章嫌疑</del>。如果你看到这个页面，有什么建议，欢迎向我发邮件。邮箱地址在“关于”页面，左上角。<br><del>话说也没有人看到这个吧</del></p>
 </blockquote>
 
-  </div>
-  
-    
-      <a id="older" class="blog-nav" href="../../22/about/">OLDER&nbsp;&gt;</a>
-      
-        
-          <a id="newer" class="blog-nav" href="../../../../2023/05/01/%E7%A0%94%E5%AD%A6%E6%97%A5%E8%AE%B0/">&lt;&nbsp;NEWER</a>
-          
-            
-</div>
+	</article>
+</main>
 
-        <div class="footer">
-  
-    <div class="footer-more">
-      
-        <a href="/">Copyleft © 影子 2022 - 2023</a>
-        
-    </div>
-  
-    <div class="footer-more">
-      
-        <a target="_blank" rel="noopener" href="https://github.com/leedom92/hexo-theme-leedom">Theme by Leedom | Powered by Hexo</a>
-        
-    </div>
-  
-</div>
-
-      </div>
-
-      <div class="back-to-top hidden">
-  <a href="javascript: void(0)">
-    <i class="iconfont icon-chevronup"></i>
-  </a>
-</div>
-
-
-<script src="../../../../js/backtotop.js"></script>
-
-
-
-      
-  <div class="search-icon" id="search-icon">
-    <a href="javascript: void(0)">
-      <i class="iconfont icon-search"></i>
-    </a>
-  </div>
-
-  <div class="search-overlay hidden">
-    <div class="search-content" tabindex="0">
-      <div class="search-box">
-        <div class="search-title">
-          <!-- <span class="search-icon-input">
-            <a href="javascript: void(0)">
-              <i class="iconfont icon-search"></i>
-            </a>
-          </span> -->
-          
-            <input type="text" class="search-input" id="search-input" placeholder="$ grep...">
-          
-          <span class="search-close-icon" id="search-close-icon">
-            <a href="javascript: void(0)">
-              <i class="iconfont icon-close"></i>
-            </a>
-          </span>
-        </div>
-        <div class="search-result" id="search-result"></div>
-      </div>
-    </div>
-  </div>
-
-  <script type="text/javascript">
-    var inputArea = document.querySelector("#search-input")
-    var searchOverlayArea = document.querySelector(".search-overlay")
-
-    // inputArea.onclick = function() {
-    //   getSearchFile()
-    //   this.onclick = null
-    // }
-
-    inputArea.onkeydown = function() {
-      if(event.keyCode == 13)
-        return false
-    }
-
-    function openOrHideSearchContent() {
-      let isHidden = searchOverlayArea.classList.contains('hidden')
-      if (isHidden) {
-        searchOverlayArea.classList.remove('hidden')
-        document.body.classList.add('hidden')
-        inputArea.focus()
-        getSearchFile()
-      } else {
-        searchOverlayArea.classList.add('hidden')
-        document.body.classList.remove('hidden')
-      }
-    }
-
-    function blurSearchContent(e) {
-      if (e.target === searchOverlayArea) {
-        openOrHideSearchContent()
-      }
-    }
-
-    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
-    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
-    searchOverlayArea.addEventListener("click", blurSearchContent, false)
-
-    var searchFunc = function (path, search_id, content_id) {
-      'use strict';
-      var $input = document.getElementById(search_id);
-      var $resultContent = document.getElementById(content_id);
-      $resultContent.innerHTML = "<ul><span class='local-search-empty'><span></ul>";
-      // $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
-      $.ajax({
-        // 0x01. load xml file
-        url: path,
-        dataType: "xml",
-        success: function (xmlResponse) {
-          // 0x02. parse xml file
-          var datas = $("entry", xmlResponse).map(function () {
-            return {
-              title: $("title", this).text(),
-              content: $("content", this).text(),
-              url: $("url", this).text()
-            };
-          }).get();
-          $resultContent.innerHTML = "";
-
-          $input.addEventListener('input', function () {
-            // 0x03. parse query to keywords list
-            var str = '<ul class=\"search-result-list\">';
-            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
-            $resultContent.innerHTML = "";
-            if (this.value.trim().length <= 0) {
-              return;
-            }
-            // 0x04. perform local searching
-            datas.forEach(function (data) {
-              var isMatch = true;
-              var content_index = [];
-              if (!data.title || data.title.trim() === '') {
-                data.title = "Untitled";
-              }
-              var orig_data_title = data.title.trim();
-              var data_title = orig_data_title.toLowerCase();
-              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
-              var data_content = orig_data_content.toLowerCase();
-              var data_url = data.url;
-              var index_title = -1;
-              var index_content = -1;
-              var first_occur = -1;
-              // only match artiles with not empty contents
-              if (data_content !== '') {
-                keywords.forEach(function (keyword, i) {
-                  index_title = data_title.indexOf(keyword);
-                  index_content = data_content.indexOf(keyword);
-
-                  if (index_title < 0 && index_content < 0) {
-                    isMatch = false;
-                  } else {
-                    if (index_content < 0) {
-                      index_content = 0;
-                    }
-                    if (i == 0) {
-                      first_occur = index_content;
-                    }
-                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
-                  }
-                });
-              } else {
-                isMatch = false;
-              }
-              // 0x05. show search results
-              if (isMatch) {
-                str += "<li><a href='" + data_url + "' class='search-result-title'><h2>" + orig_data_title + "</h2></a>";
-                var content = orig_data_content;
-                if (first_occur >= 0) {
-                  // cut out 100 characters
-                  var start = first_occur - 20;
-                  var end = first_occur + 80;
-
-                  if (start < 0) {
-                    start = 0;
-                  }
-
-                  if (start == 0) {
-                    end = 100;
-                  }
-
-                  if (end > content.length) {
-                    end = content.length;
-                  }
-
-                  var match_content = content.substr(start, end);
-
-                  // highlight all keywords
-                  keywords.forEach(function (keyword) {
-                    var regS = new RegExp(keyword, "gi");
-                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
-                  });
-
-                  str += "<h3 class=\"search-result-abstract\">" + match_content + "...</h3>"
-                }
-                str += "<hr></li>";
-              }
-            });
-            str += "</ul>";
-            if (str.indexOf('<li>') === -1) {
-              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
-            }
-            $resultContent.innerHTML = str;
-          });
-        },
-        error: function(xhr, status, error) {
-          $resultContent.innerHTML = ""
-          if (xhr.status === 404) {
-            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/leedom92/hexo-theme-leedom#configuration' target='_black'>configuration</a><span></ul>";
-          } else {
-            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
-          }
-        }
-      });
-      $(document).on('click', '#search-close-icon', function() {
-        $('#search-input').val('');
-        $('#search-result').html('');
-      });
-    }
-
-    var getSearchFile = function() {
-        var path = "/search.xml";
-        searchFunc(path, 'search-input', 'search-result');
-    }
-  </script>
-
-
-
-
-    </div>
-  </body>
+			</div>
+		</div>
+	</body>
+	<script src="/js/navigation.js"></script>
+	<script src="/js/anchor.js"></script>
+	
+		<script src="/js/copyCode.js"></script>
 </html>
