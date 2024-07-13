@@ -72,8 +72,6 @@ html, body {
 	--fgSecondary: #555;
 	--selectBgColor: black;
 	--selectFgColor: #f0f0f0;
-	--codeBgColor: #333;
-	--codeFgColor: white;
 	--easeOutExpo: cubic-bezier(0.19, 1, 0.22, 1);
 	--pagePadding: 80px;
 	--pageWidth: min(870px, 87%);
@@ -162,7 +160,7 @@ nav#navigation.activated {
 	pointer-events: auto;
 }
 
-nav#navigation ul#siteLinks {
+nav#navigation ul#siteLinks,ul#notes {
 	list-style-type: none;
 	padding: 0;
 	height: auto;
@@ -175,6 +173,12 @@ nav#navigation li {
 	transition-duration: 1.2s;
 	transition-timing-function: var(--easeOutExpo);
 	margin-bottom: 0.27em;
+}
+
+nav#navigation ul#notes li {
+	display: inline-block;
+	font-size: 28px;
+	margin-bottom: 0;
 }
 
 nav#navigation li.prepared {
