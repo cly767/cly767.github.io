@@ -54,7 +54,7 @@
 		
 		<li class="prepared"><a href="https://github.com/cly767/subway" target="_blank">Theme by subway.</a> | </li>
 		
-		<li class="prepared"><a href="https://hexo.io" target="_blank">Powered by Hexo</a></li>
+		<li class="prepared"><a href="https://hexo.io" target="_blank">Powered by Hexo.</a></li>
 		
 	</ul>
 </nav>
@@ -106,13 +106,6 @@
 			
 			<li>
 				<article class="entry">
-				<a href="2023/08/08/%E6%97%A5%E8%AE%B0/">日记</a>
-				<div class="date">Aug 08, 2023</div>
-				</article>
-			</li>
-			
-			<li>
-				<article class="entry">
 				<a href="2023/05/02/Interstellar/">Excerpts from Interstellar</a>
 				<div class="date">May 02, 2023</div>
 				</article>
@@ -132,6 +125,13 @@
 				</article>
 			</li>
 			
+			<li>
+				<article class="entry">
+				<a href="2022/06/22/hello-world/">Hello World</a>
+				<div class="date">Jun 22, 2022</div>
+				</article>
+			</li>
+			
 		</ul>
 	</div>
 </main>
@@ -142,5 +142,16 @@
 	<script src="/js/navigation.js"></script>
 	<script src="/js/anchor.js"></script>
 	
-		<script src="/js/copyCode.js"></script>
+	<script>
+function requestSCFont() {
+	let pageContainer = document.getElementById('pageContainer');
+	let SCContent = pageContainer.innerText.replace(/[^\u4E00-\u9FA5]/gi,'');
+	let requestURL = "https://fonts.googleapis.com/css?family=Noto+Sans+SC:100,400,700&text=" + SCContent;
+	let link = document.createElement('link');
+	link.href = requestURL;
+	link.rel = 'stylesheet';
+	document.getElementsByTagName('head')[0].append(link);
+}
+requestSCFont();
+	</script>
 </html>

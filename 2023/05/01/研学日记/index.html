@@ -57,7 +57,7 @@
 		
 		<li class="prepared"><a href="https://github.com/cly767/subway" target="_blank">Theme by subway.</a> | </li>
 		
-		<li class="prepared"><a href="https://hexo.io" target="_blank">Powered by Hexo</a></li>
+		<li class="prepared"><a href="https://hexo.io" target="_blank">Powered by Hexo.</a></li>
 		
 	</ul>
 </nav>
@@ -118,4 +118,17 @@
 	<script src="/js/anchor.js"></script>
 	
 		<script src="/js/copyCode.js"></script>
+	
+	<script>
+function requestSCFont() {
+	let pageContainer = document.getElementById('pageContainer');
+	let SCContent = pageContainer.innerText.replace(/[^\u4E00-\u9FA5]/gi,'');
+	let requestURL = "https://fonts.googleapis.com/css?family=Noto+Sans+SC:100,400,700&text=" + SCContent;
+	let link = document.createElement('link');
+	link.href = requestURL;
+	link.rel = 'stylesheet';
+	document.getElementsByTagName('head')[0].append(link);
+}
+requestSCFont();
+	</script>
 </html>
