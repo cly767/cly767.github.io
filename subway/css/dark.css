@@ -17,22 +17,6 @@
 		color: var(--bgColor);
 	}
 
-	button#navigationToggle {
-		background-image: url('/images/menu_light.svg');
-	}
-
-	button#navigationToggle:active {
-		background-image: url('/images/menu.svg');
-	}
-
-	button#navigationToggle.activated {
-		background-image: url('/images/close_light.svg');
-	}
-
-	button#navigationToggle.activated:active {
-		background-image: url('/images/close.svg');
-	}
-
 	a:active {
 		color: #aaa;
 	}
