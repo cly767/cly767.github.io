@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang='zh_CN'>
+	<head>
+	<title>
+		
+			NixOS 入坑：前置知识 | 影子
+		
+	</title>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width"/>
+	<!-- Roboto from Google Fonts -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Roboto+Mono"/>
+	<!-- Noto Sans SC from Google Fonts -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+SC:100,400,700"/>
+
+	<link rel="stylesheet" href="/subway/css/base.css"/>
+	<link rel="stylesheet" href="/subway/css/dark.css"/>
+	
+	<link rel="stylesheet" href="/subway/css/post.css"/>
+	
+
+	<link rel="prefetch" href="/subway/js/navigation.js"/>
+	<link rel="prefetch" href="/subway/js/anchor.js"/>
+	
+	<link rel="prefetch" href="/subway/js/copyCode.js"/>
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+	<body>
+		<div id='pageContainer'>
+			<div class='wrapper'>
+				<header id="header">
+	<div class="titleWrapper">
+		<h1 class="title">
+			
+				NixOS 入坑：前置知识
+			
+		</h1>
+		
+		<div class="date">Aug 05, 2024</div>
+		
+	</div>
+	<div class="separator"></div>
+	<button id="navigationToggle">
+		<div class="bar"></div>
+		<div class="bar"></div>
+		<div class="bar"></div>
+	</button>
+</header>
+
+				<main>
+	<nav id="navigation">
+	<ul id="siteLinks">
+		
+		<li class="prepared"><a href="/">Home</a></li>
+		
+		<li class="prepared"><a href="/about/">About</a></li>
+		
+		<li class="prepared"><a href="https://github.com/cly767" target="_blank">Github</a></li>
+		
+	</ul>
+	<ul id="notes">
+		
+		<li class="prepared"><a href="https://github.com/cly767/subway" target="_blank">Theme by subway.</a> | </li>
+		
+		<li class="prepared"><a href="https://hexo.io" target="_blank">Powered by Hexo.</a></li>
+		
+	</ul>
+</nav>
+
+	<article id="contents">
+		<p>没错，<a target="_blank" rel="noopener" href="https://nixos.org/">NixOS</a> 与其他任何一个发行版都不一样，你需要提前了解一些有关 Nix &amp; NixOS 的知识，才能比较顺畅地入门并使用 NixOS 。</p>
+<p><del>英语也得学好哦！</del></p>
+<h1 id="About-Nix-amp-NixOS"><a href="#About-Nix-amp-NixOS" class="headerlink" title="About Nix &amp; NixOS"></a>About Nix &amp; NixOS</h1><p>很多人都说 Nix 是一个“函数式包管理器”。而我更愿意加上“构建工具”。因为，Nix 不仅提供了一个可复现的软件包管理系统，还提供了一个极其方便的软件开发工具。如果你有兴趣，可以<a target="_blank" rel="noopener" href="https://nixos.org/learn/">深入研究一番</a>。这里我只探讨桌面用例，就不展开讲了。</p>
+<p>NixOS 则是在 Nix 的基础上构建的一个 GNU&#x2F;Linux 发行版。 Nix 的许多特性，比如可复现性、软件包隔离等等，在 NixOS 的身上也有体现。比如，如果你想重装系统，只要把 <code>configuration.nix</code> 丢进 <code>/etc/nixos/</code> ，再 <code>nixos-generate-config --root &lt;your-destination&gt;</code> &amp;&amp; <code>nixos-install --root &lt;your-destination&gt;</code>就可以了。同时 NixOS 也是一个原子更新的发行版，如果系统出现故障，你随时可以“恢复最近一次正确的设置”。</p>
+<h1 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h1><h2 id="1-channels"><a href="#1-channels" class="headerlink" title="1. channels"></a>1. channels</h2><p><strong>channel</strong> 好比传统发行版中的 ‘repository’ 仓库概念，它描述了发行版当前包含的软件包信息。但是， NixOS 的 channels 还包括有关 <strong>NixOS Options</strong> 的一些信息。</p>
+<h2 id="2-substituters"><a href="#2-substituters" class="headerlink" title="2. substituters"></a>2. substituters</h2><p><strong>substituter</strong> 直译过来是“替代者”的意思。用人话讲，就是代替你的电脑编译软件包的机器。前面我提过， Nix 是一个“构建工具”。如果没有 substituters ，你就需要一个一个地从网上下载软件源码，然后用 Nix 构建出你的系统。 substituters 让你不必本地编译源码，只需要下载已经编译好的二进制文件即可；如果确实有软件不在 substituters 中， Nix 就会尝试从源码构建。这也是 NixOS 与传统发行版不同的一点：从源代码安装软件与从预编译二进制安装一样简单。</p>
+<h2 id="3-The-Nix-Store"><a href="#3-The-Nix-Store" class="headerlink" title="3. The Nix Store"></a>3. The Nix Store</h2><p>这可不是“NixOS 应用商店”的意思，而是存储你的 NixOS <strong>几乎所有文件</strong>的地方。所有软件包都存在 <code>/nix/store/</code> 这个路径下，分别放在 <code>hash-name-version</code> 命名格式的目录里，最终用软链接的形式构成整个操作系统。这种形式违反了一个叫做 <em>FHS(Filesystem Hirarchy Standard)</em> 的标准，所以用起来会有点怪异。比如，你不能直接运行从网上下载的二进制文件，而是需要一些工具，甚至需要自己打包。</p>
+<h2 id="4-The-Nix-Expression-Language"><a href="#4-The-Nix-Expression-Language" class="headerlink" title="4. The Nix Expression Language"></a>4. The Nix Expression Language</h2><p>这是 Nix 专用的<strong>表达式语言</strong>，也是入坑 NixOS 最大的阻碍之一。接下来我会介绍一些安装 NixOS 过程中可能会遇到的常用语法。</p>
+<h1 id="Nix-表达式语言特性-amp-常用语法"><a href="#Nix-表达式语言特性-amp-常用语法" class="headerlink" title="Nix 表达式语言特性 &amp; 常用语法"></a>Nix 表达式语言特性 &amp; 常用语法</h1><h2 id="0-语言特性"><a href="#0-语言特性" class="headerlink" title="0. 语言特性"></a>0. 语言特性</h2><p>Nix 表达式语言是一个<strong>表达式语言</strong>。这意味着，变量的值不可以被修改（例如 <code>a = 1; a = 2;</code> 是不合法的）。同时变量的先后顺序没有特殊意义（例如 <code>b = a; a = 2;</code> 是可以的）。</p>
+<p>Nix 表达式语言要求在每条语句后写上分号；</p>
+<h2 id="1-数据类型"><a href="#1-数据类型" class="headerlink" title="1. 数据类型"></a>1. 数据类型</h2><p>在安装 NixOS 的过程中，你会用到如下常用数据类型：</p>
+<ul>
+<li>字符串 <em>String</em> ：<code>&quot;foobar&quot;</code><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">this is </span></span><br><span class="line"><span class="string">a multi-line string.</span></span><br><span class="line"><span class="string">&#x27;&#x27;</span>&#x27;</span><br></pre></td></tr></table></figure></li>
+<li>数字 <em>Number</em> ：<code>114 3.14159</code></li>
+<li>路径 <em>Path</em> ：<code>/bin/sh ./default.nix ~/.config/fish/config.fish</code></li>
+<li>布尔 <em>Bool</em> ：<code>true false</code></li>
+<li>列表 <em>List</em> ：<code>[ 123 /foo/bar &quot;hello world&quot; ]</code><br>列表之间可以用 <code>++</code> 来连接： <code>[ 456 /bar/foo ] ++ [ &quot;hello world&quot; 114.514 ]</code></li>
+<li>属性集 <em>Attribute Set</em> ：<code>&#123; a = 1; b = 2;&#125;</code></li>
+</ul>
+<h2 id="2-函数"><a href="#2-函数" class="headerlink" title="2. 函数"></a>2. 函数</h2><p>在 Nix 表达式语言中，所有函数都是<strong>匿名函数</strong>。它们只有函数体，没有名称。</p>
+<p>函数的语法形式如下：</p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;parameter&gt;: &lt;body&gt;</span><br></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<ul>
+<li><code>&lt;parameter&gt;</code>是<strong>参数</strong>。<strong>只能有一个参数</strong>；传递更多参数需要用属性集。</li>
+<li><code>&lt;body&gt;</code>是<strong>函数体</strong>。可以理解为函数返回的内容。</li>
+</ul>
+<h2 id="3-with-语法"><a href="#3-with-语法" class="headerlink" title="3. with 语法"></a>3. <code>with</code> 语法</h2><p>用一个例子解释：</p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span></span><br><span class="line">    <span class="attr">foobar</span> = &#123; <span class="attr">a</span> = <span class="number">1</span>; <span class="attr">b</span> = <span class="string">&quot;hello world&quot;</span>;&#125;;</span><br><span class="line"><span class="keyword">in</span></span><br><span class="line">    <span class="attr">m</span> = <span class="keyword">with</span> foobar; &#123; <span class="attr">c</span> = a + <span class="number">2</span>; <span class="attr">d</span> = b;];</span><br><span class="line">    <span class="attr">n</span> = &#123; <span class="attr">e</span> = foobar.a; <span class="attr">f</span> = foobar.b; &#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>with</code>语法</strong> 可以避免重复输入同一个列表名，使引用列表项更简便。安装 NixOS 时，这个作用尤为明显。</p>
+<h1 id="接下来"><a href="#接下来" class="headerlink" title="接下来"></a>接下来</h1><p>我会讲讲 NixOS 的安装过程，以及你可能会用到的一些 NixOS Options 。</p>
+
+	</article>
+</main>
+
+			</div>
+		</div>
+	</body>
+	<script src="/subway/js/navigation.js"></script>
+	<script src="/subway/js/anchor.js"></script>
+	
+		<script src="/subway/js/copyCode.js"></script>
+	
+</html>
