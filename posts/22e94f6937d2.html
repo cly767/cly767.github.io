@@ -27,7 +27,7 @@
 <meta name="generator" content="Hexo 6.3.0"></head>
 
 	<body>
-		<div id='pageContainer'>
+		<div id='container'>
 			<div class='wrapper'>
 				<header id="header">
 	<div class="titleWrapper">
@@ -48,8 +48,8 @@
 	</button>
 </header>
 
-				<main>
-	<nav id="navigation">
+				<div id="body">
+					<nav id="navigation">
 	<ul id="siteLinks">
 		
 		<li class="prepared"><a href="/">Home</a></li>
@@ -68,8 +68,9 @@
 	</ul>
 </nav>
 
-	<article id="contents">
-		<p>没错，<a target="_blank" rel="noopener" href="https://nixos.org/">NixOS</a> 与其他任何一个发行版都不一样，你需要提前了解一些有关 Nix &amp; NixOS 的知识，才能比较顺畅地入门并使用 NixOS 。</p>
+					<div id="postNavigation">
+						<article id="contents">
+	<p>没错，<a target="_blank" rel="noopener" href="https://nixos.org/">NixOS</a> 与其他任何一个发行版都不一样，你需要提前了解一些有关 Nix &amp; NixOS 的知识，才能比较顺畅地入门并使用 NixOS 。</p>
 <p><del>英语也得学好哦！</del></p>
 <h1 id="About-Nix-amp-NixOS"><a href="#About-Nix-amp-NixOS" class="headerlink" title="About Nix &amp; NixOS"></a>About Nix &amp; NixOS</h1><p>很多人都说 Nix 是一个“函数式包管理器”。而我更愿意加上“构建工具”。因为，Nix 不仅提供了一个可复现的软件包管理系统，还提供了一个极其方便的软件开发工具。如果你有兴趣，可以<a target="_blank" rel="noopener" href="https://nixos.org/learn/">深入研究一番</a>。这里我只探讨桌面用例，就不展开讲了。</p>
 <p>NixOS 则是在 Nix 的基础上构建的一个 GNU&#x2F;Linux 发行版。 Nix 的许多特性，比如可复现性、软件包隔离等等，在 NixOS 的身上也有体现。比如，如果你想重装系统，只要把 <code>configuration.nix</code> 丢进 <code>/etc/nixos/</code> ，再 <code>nixos-generate-config --root &lt;your-destination&gt;</code> &amp;&amp; <code>nixos-install --root &lt;your-destination&gt;</code>就可以了。同时 NixOS 也是一个原子更新的发行版，如果系统出现故障，你随时可以“恢复最近一次正确的设置”。</p>
@@ -103,9 +104,10 @@
 <p><strong><code>with</code>语法</strong> 可以避免重复输入同一个列表名，使引用列表项更简便。安装 NixOS 时，这个作用尤为明显。</p>
 <h1 id="接下来"><a href="#接下来" class="headerlink" title="接下来"></a>接下来</h1><p>我会讲讲 NixOS 的安装过程，以及你可能会用到的一些 NixOS Options 。</p>
 
-	</article>
-</main>
+</article>
 
+					</div>
+				</div>
 			</div>
 		</div>
 	</body>
