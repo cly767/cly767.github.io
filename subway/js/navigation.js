@@ -1,27 +1,18 @@
 'use strict';
 function setupNavigation() {
-	function updateState(mql) {
-		if(mql.matches)
-			animate = false;
-		else
-			animate = true;
-	}
-	// state indicator
-	let animate = true;
-	let mql = window.matchMedia('(prefers-reduced-motion: reduce)');
-	mql.addListener(updateState);
-	// init on page load
-	updateState(mql);
-
 	// getting stuff
+	let container = document.getElementById('container');
+	let navigationEnter = document.getElementById('navigationEnter');
+	let navigationQuit = document.getElementById('navigationQuit');
+	let drawer = document.getElementById('drawer');
 	let navigation = document.getElementById('navigation');
-	let navigationToggle = document.getElementById('navigationToggle');
 	let siteLinks = document.getElementById('siteLinks');
-	let linkList = navigation.getElementsByTagName('li');
-	let postNavigation = document.getElementById('postNavigation');
+	let notes = document.getElementById('notes');
+	// we'll need these later
 	let timerid;
+	let overlay;
 
-	function showSiteLinks(linkList) {
+	function shift1by1(linkList) {
 		let i = 0;
 		// one by one
 		timerid = setInterval(() => {
@@ -32,54 +23,45 @@ function setupNavigation() {
 				return;
 			}
 			i++;
-		}, animate?50:0);
+		}, 50);
 	}
 
-	function prepareSiteLinks(linkList) {
+	function restoreShift(linkList) {
 		for( let i of linkList )
 			i.classList.add('prepared');
 	}
 
 	function enterNavigation(e) {
 		// re-register event listeners
-		navigationToggle.removeEventListener('click', enterNavigation);
-		navigationToggle.addEventListener('click', leaveNavigation);
-		// activate the button
-		navigationToggle.classList.add('activated');
-		// fade out
-		postNavigation.classList.add('transparent')
-		if(!animate) showSiteLinks(linkList);
-		setTimeout(linkList => {
-			// activate the navigation layer
-			navigation.classList.add('activated');
-			// hide the post-navigation things
-			postNavigation.classList.add('truncated');
-			if(animate) showSiteLinks(linkList);
-		}, 100, linkList);
+		navigationEnter.removeEventListener('click', enterNavigation);
+		navigationEnter.addEventListener('click', leaveNavigation);
+		attachOverlay();
+		container.classList.add('pressed');
+		drawer.classList.add('activated');
+		shift1by1(drawer.children);
 	}
 
 	function leaveNavigation(e) {
 		// we're leaving, so stop entering
 		clearInterval(timerid);
-		// restore the link list
-		prepareSiteLinks(linkList);
-		// deactivate the button
-		navigationToggle.classList.remove('activated');
-		// deactivate the navigation layer
-		navigation.classList.remove('activated');
-		// wait for the links to disappear
-		setTimeout(() => {
-			// show & fade in
-			postNavigation.classList.remove('truncated');
-			postNavigation.classList.remove('transparent');
-			// re-register event listeners
-			navigationToggle.removeEventListener('click', leaveNavigation);
-			navigationToggle.addEventListener('click', enterNavigation);
-		}, 270);
+		navigationEnter.removeEventListener('click', leaveNavigation);
+		navigationEnter.addEventListener('click', enterNavigation);
+		restoreShift(drawer.children);
+		drawer.classList.remove('activated');
+		container.classList.remove('pressed');
+		overlay.remove();
+	}
+
+	function attachOverlay() {
+		overlay = document.createElement('div');
+		overlay.classList = 'overlay';
+		overlay.addEventListener('click', leaveNavigation);
+		document.body.append(overlay);
 	}
 
 	// register event listener
-	navigationToggle.addEventListener('click', enterNavigation);
+	navigationEnter.addEventListener('click', enterNavigation);
+	navigationQuit.addEventListener('click', leaveNavigation);
 }
 
 setupNavigation();
