@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang='zh_CN'>
+	<head>
+	<title>
+		
+			用 ostree 安装 Arch Linux | 影子
+		
+	</title>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width"/>
+	<!-- Roboto from Google Fonts -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Roboto+Mono"/>
+	<!-- Noto Sans SC from Google Fonts -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+SC:100,400,700"/>
+
+	<link rel="stylesheet" href="/subway/css/base.css"/>
+	<link rel="stylesheet" href="/subway/css/dark.css"/>
+	
+	<link rel="stylesheet" href="/subway/css/post.css"/>
+	
+
+	<link rel="prefetch" href="/subway/js/navigation.js"/>
+	<link rel="prefetch" href="/subway/js/anchor.js"/>
+	
+	<link rel="prefetch" href="/subway/js/copyCode.js"/>
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+	<body>
+		<aside id="drawer">
+	<header id="drawerHeader" class="prepared">
+		<h1 class="title">
+			影子
+		</h1>
+		<div class="separator"></div>
+		<button id="navigationQuit">
+			<div class="bar"></div>
+			<div class="bar"></div>
+		</button>
+	</header>
+	<nav id="navigation" class="prepared">
+		<ul id="siteLinks">
+			
+			<li><a href="/">首页</a></li>
+			
+			<li><a href="about.html">关于</a></li>
+			
+			<li><a href="https://github.com/cly767" target="_blank">Github</a></li>
+			
+		</ul>
+		<ul id="notes">
+			
+			<li><a href="https://github.com/cly767/subway" target="_blank">主题 subway</a> | </li>
+			
+			<li><a href="https://hexo.io" target="_blank">由 Hexo 强力驱动</a></li>
+			
+		</ul>
+	</nav>
+</aside>
+
+		<div id='container'>
+			<div id='wrapper'>
+				<header>
+	<div class="titleWrapper">
+		<h1 class="title">
+			
+				用 ostree 安装 Arch Linux
+			
+		</h1>
+		
+		<div class="date">Dec 01, 2024</div>
+		
+	</div>
+	<div class="separator"></div>
+	<button id="navigationEnter">
+		<div class="bar"></div>
+		<div class="bar"></div>
+		<div class="bar"></div>
+	</button>
+</header>
+
+				<article>
+	<p>假设你将系统根目录挂载在 <code>/mnt</code>。</p>
+<h2 id="设置安装环境"><a href="#设置安装环境" class="headerlink" title="设置安装环境"></a>设置安装环境</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pacman -Sy ostree git</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/ostreedev/ostree</span><br></pre></td></tr></table></figure>
+
+<h2 id="磁盘分区-amp-格式化"><a href="#磁盘分区-amp-格式化" class="headerlink" title="磁盘分区 &amp; 格式化"></a>磁盘分区 &amp; 格式化</h2><p>由于 ostree 的特性，我们需要单独准备一个 <code>/boot</code> 分区来存放内核与 initramfs ，并且这个文件系统需要支持软链接，来实现一个<del>貌似是屎山</del>的软链接。EFI 系统分区可以挂载在 <code>/boot/efi</code> 。以下是一份示例。</p>
+<table>
+<thead>
+<tr>
+<th>分区序号</th>
+<th>挂载点</th>
+<th>文件系统</th>
+<th>大小</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><code>/boot/efi</code></td>
+<td>vfat</td>
+<td>128MB（如果不考虑多重启动）</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>/boot</code></td>
+<td>btrfs</td>
+<td>1GB</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>/</code></td>
+<td>btrfs</td>
+<td>随意</td>
+</tr>
+</tbody></table>
+<p>建议使用 btrfs 等较新的文件系统，以防达到 ext4 的 inode 数量上限。</p>
+<h2 id="初始化-ostree"><a href="#初始化-ostree" class="headerlink" title="初始化 ostree"></a>初始化 ostree</h2><p>按照顺序挂载所有文件系统后，运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /mnt/ostree/&#123;deploy,repo,tree&#125; <span class="comment"># tree 也可以是一个 btrfs 子卷，方便安装完成后丢弃</span></span><br><span class="line">ostree init --repo=/mnt/ostree/repo</span><br><span class="line"><span class="built_in">export</span> OSTREE_REPO=/mnt/ostree/repo</span><br></pre></td></tr></table></figure>
+
+<h2 id="向工作目录中安装软件包"><a href="#向工作目录中安装软件包" class="headerlink" title="向工作目录中安装软件包"></a>向工作目录中安装软件包</h2><p>注意，如果要安装任何软件包，务必提前<strong>做好规划</strong>，并在此处<strong>一并安装</strong>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /mnt/ostree/</span><br><span class="line">mount --<span class="built_in">bind</span> tree tree</span><br><span class="line">pacstrap -K tree base linux linux-firmware grub efibootmgr ostree git neovim arch-install-scripts btrfs-progs</span><br></pre></td></tr></table></figure>
+
+<h2 id="生成-locale"><a href="#生成-locale" class="headerlink" title="生成 locale"></a>生成 locale</h2><p>由于部署后的 <code>/usr/lib/locale</code> 目录为只读，生成 locale 的步骤必须在这里执行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim tree/etc/locale.gen</span><br><span class="line">arch-chroot tree locale-gen</span><br></pre></td></tr></table></figure>
+
+<h2 id="内核及-initramfs"><a href="#内核及-initramfs" class="headerlink" title="内核及 initramfs"></a>内核及 initramfs</h2><p>把 <code>ostree.git/src/boot/mkinitcpio/&#123;ostree,ostree-mkinitcpio.conf&#125;</code> 分别复制到 <code>tree/etc/&#123;initcpio/install,mkinitcpio.conf.d&#125;</code> 。</p>
+<p>生成 initramfs ，并将其移动到相应位置。<code>$kver</code> 指 <code>tree/usr/lib/modules</code> 中的内核版本号。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim tree/etc/mkinitcpio.d/linux.preset <span class="comment"># 删除所有与 fallback 有关的项目，我们不需要它</span></span><br><span class="line"><span class="built_in">rm</span> tree/boot/&#123;initramfs-linux-fallback.img,vmlinuz-linux&#125;</span><br><span class="line">arch-chroot tree mkinitcpio -P</span><br><span class="line"><span class="built_in">mv</span> tree/&#123;boot/initramfs-linux.img,usr/lib/modules/<span class="variable">$kver</span>/initramfs.img&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这时，<code>vmlinuz</code> 应该已经在<code>tree/usr/lib/modules/$kver</code> 里面了。</p>
+<h2 id="调整目录结构"><a href="#调整目录结构" class="headerlink" title="调整目录结构"></a>调整目录结构</h2><p>需要对 Arch Linux 的目录结构作如下更改，以满足 ostree 相关特性的要求。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> tree</span><br><span class="line"><span class="built_in">mkdir</span> sysroot --mode 755 <span class="comment"># 指向系统根目录</span></span><br><span class="line"><span class="built_in">mv</span> tmp /mnt/tmp</span><br><span class="line"><span class="built_in">ln</span> -s sysroot/tmp tmp <span class="comment"># 这是一个损坏的链接，但是在启动之后</span></span><br><span class="line">                      <span class="comment"># ostree 就会把 sysroot 挂载上来，</span></span><br><span class="line">                      <span class="comment"># 你就会发现它生效了</span></span><br><span class="line">                      </span><br><span class="line"><span class="built_in">mv</span> etc usr/ <span class="comment"># “默认配置”</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">mv</span> home mnt opt srv var/ <span class="comment"># “可变目录”</span></span><br><span class="line"><span class="built_in">ln</span> -s var/&#123;home,mnt,opt,srv&#125; .</span><br><span class="line"><span class="built_in">mv</span> root var/roothome</span><br><span class="line"><span class="built_in">ln</span> -s var/roothome root</span><br><span class="line"><span class="built_in">mv</span> usr/local var/usrlocal</span><br><span class="line"><span class="built_in">ln</span> -s var/usrlocal usr/local</span><br><span class="line"></span><br><span class="line">ostree admin stateroot-init archlinux --sysroot=/mnt</span><br><span class="line"><span class="built_in">mv</span> var /mnt/ostree/deploy/archlinux/var</span><br><span class="line"><span class="built_in">mkdir</span> var --mode 755 <span class="comment"># ostree 会将其绑定挂载到以上目录</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="提交-amp-部署"><a href="#提交-amp-部署" class="headerlink" title="提交 &amp; 部署"></a>提交 &amp; 部署</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ostree commit --branch=archlinux --tree=<span class="built_in">dir</span>=tree</span><br><span class="line">ostree admin deploy archlinux --stateroot=archlinux --sysroot=/mnt</span><br></pre></td></tr></table></figure>
+
+<h2 id="进行部署后配置"><a href="#进行部署后配置" class="headerlink" title="进行部署后配置"></a>进行部署后配置</h2><h3 id="生成-fstab"><a href="#生成-fstab" class="headerlink" title="生成 fstab"></a>生成 fstab</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 假设你的挂载点在物理根目录与部署根目录之间对应</span></span><br><span class="line"><span class="comment"># $hash 指实际部署的哈希（也即上面 ostree commit 输出的哈希）</span></span><br><span class="line">genfstab -U /mnt &gt; /mnt/ostree/deploy/archlinux/deploy/<span class="variable">$hash</span>/etc/fstab</span><br></pre></td></tr></table></figure>
+
+<h3 id="其他配置"><a href="#其他配置" class="headerlink" title="其他配置"></a>其他配置</h3><p>挂载所有文件系统，<code>arch-chroot</code> 进部署，然后自己去找官方教程。</p>
+<h2 id="启动引导"><a href="#启动引导" class="headerlink" title="启动引导"></a>启动引导</h2><p>这里推荐 GRUB ，它有开箱即用的 ostree 配置。</p>
+<p>默认生成的 grub.cfg 里缺少 <code>root=</code> 内核参数，记得加上。</p>
+<p><strong>更新：</strong>2024&#x2F;12&#x2F;1，安装时报错：cannot find a device for ‘&#x2F;‘ (is &#x2F;dev mounted?) ，解决方案未知。</p>
+<h2 id="重新启动"><a href="#重新启动" class="headerlink" title="重新启动"></a>重新启动</h2><p>你应该能看到 <code>Arch Linux (ostree:0)</code> 。</p>
+<p>祝贺你再次整活成功！</p>
+<hr>
+<p>其实这种方式很麻烦，一点也不 Arch 。整活还可以，如果你要日用，得写一个脚本。而且，这种方式有一个弊端：对磁盘的损耗尤其大。每次部署都相当于是一次全新安装，而且想要安装软件包，必须进行全面系统更新，不然就只能像 Fedora Silverblue 那样用容器。</p>
+<p>但是这样也有好处。由于每次更新都是全新安装，出现一些不可言明的问题的几率就会变小；而且 ostree 会自动处理 <code>/etc</code> 的更新，以后也不用管 pacnew 文件了。主要还是看个人取舍。</p>
+<p>建议同时装个 Nix 来解决装软件的问题（逃</p>
+
+</article>
+
+			</div>
+		</div>
+	</body>
+	<script src="/subway/js/navigation.js"></script>
+	<script src="/subway/js/anchor.js"></script>
+	
+		<script src="/subway/js/copyCode.js"></script>
+	
+</html>
