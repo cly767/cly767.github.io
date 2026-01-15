@@ -84,7 +84,7 @@
 <blockquote>
 <p>Fedora CoreOS is an automatically updating, minimal, monolithic, container-focused operating system, designed for clusters but also operable standalone, optimized for Kubernetes but also great without it. Its goal is to provide the best container host to run containerized workloads securely and at scale.</p>
 </blockquote>
-<p>简而言之，最小化维护，极致稳定，容器中心。</p>
+<p>简而言之，最小化维护，不可变，极致稳定，容器中心。</p>
 <h2 id="总体流程"><a href="#总体流程" class="headerlink" title="总体流程"></a>总体流程</h2><p>Fedora CoreOS 通过操作系统镜像的方式分发安装介质和系统更新；从第 43 版开始，Fedora CoreOS 默认使用 bootc OCI 镜像分发。这意味着每份镜像都是<strong>完全相同</strong>的（包括<code>/etc</code>里的配置文件）。为了实现操作系统配置的自定义， Fedora CoreOS 使用一个类似于 cloud-init 的 ignition 机制来实现系统的初始配置。</p>
 <p>另外，我们的目标平台，树莓派 4B，与传统 PC 平台又有所不同。</p>
 <p>于是，我们的安装步骤变成了：</p>
