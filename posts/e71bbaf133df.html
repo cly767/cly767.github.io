@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang='zh_CN'>
+	<head>
+	<title>
+		
+			在 Raspberry Pi 4B 上安装 Fedora CoreOS | 影子
+		
+	</title>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width"/>
+	<!-- Roboto from Google Fonts -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Roboto+Mono"/>
+	<!-- Noto Sans SC from Google Fonts -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+SC:100,400,700"/>
+
+	<link rel="stylesheet" href="../subway/css/base.css"/>
+	<link rel="stylesheet" href="../subway/css/dark.css"/>
+	
+	<link rel="stylesheet" href="../subway/css/post.css"/>
+	
+
+	<link rel="prefetch" href="../subway/js/navigation.js"/>
+	<link rel="prefetch" href="../subway/js/anchor.js"/>
+	
+	<link rel="prefetch" href="../subway/js/copyCode.js"/>
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+	<body>
+		<aside id="drawer">
+	<header id="drawerHeader" class="prepared">
+		<h1 class="title">
+			影子
+		</h1>
+		<div class="separator"></div>
+		<button id="navigationQuit">
+			<div class="bar"></div>
+			<div class="bar"></div>
+		</button>
+	</header>
+	<nav id="navigation" class="prepared">
+		<ul id="siteLinks">
+			
+			<li><a href="../index.html">首页</a></li>
+			
+			<li><a href="../about.html">关于</a></li>
+			
+			<li><a href="https://github.com/cly767" target="_blank">Github</a></li>
+			
+		</ul>
+		<ul id="notes">
+			
+			<li><a href="https://github.com/cly767/subway" target="_blank">主题 subway</a> | </li>
+			
+			<li><a href="https://hexo.io" target="_blank">由 Hexo 强力驱动</a></li>
+			
+		</ul>
+	</nav>
+</aside>
+
+		<div id='container'>
+			<div id='wrapper'>
+				<header>
+	<div class="titleWrapper">
+		<h1 class="title">
+			
+				在 Raspberry Pi 4B 上安装 Fedora CoreOS
+			
+		</h1>
+		
+		<div class="date">Jan 15, 2026</div>
+		
+	</div>
+	<div class="separator"></div>
+	<button id="navigationEnter">
+		<div class="bar"></div>
+		<div class="bar"></div>
+		<div class="bar"></div>
+	</button>
+</header>
+
+				<article>
+	<p>摘自 <a target="_blank" rel="noopener" href="https://docs.fedoraproject.org/en-US/fedora-coreos/">Fedora CoreOS Documentation</a> :</p>
+<blockquote>
+<p>Fedora CoreOS is an automatically updating, minimal, monolithic, container-focused operating system, designed for clusters but also operable standalone, optimized for Kubernetes but also great without it. Its goal is to provide the best container host to run containerized workloads securely and at scale.</p>
+</blockquote>
+<p>简而言之，最小化维护，极致稳定，容器中心。</p>
+<h2 id="总体流程"><a href="#总体流程" class="headerlink" title="总体流程"></a>总体流程</h2><p>Fedora CoreOS 通过操作系统镜像的方式分发安装介质和系统更新；从第 43 版开始，Fedora CoreOS 默认使用 bootc OCI 镜像分发。这意味着每份镜像都是<strong>完全相同</strong>的（包括<code>/etc</code>里的配置文件）。为了实现操作系统配置的自定义， Fedora CoreOS 使用一个类似于 cloud-init 的 ignition 机制来实现系统的初始配置。</p>
+<p>另外，我们的目标平台，树莓派 4B，与传统 PC 平台又有所不同。</p>
+<p>于是，我们的安装步骤变成了：</p>
+<ol>
+<li>获得 <code>ignition</code> 配置文件</li>
+<li>安装 Fedora CoreOS</li>
+<li>针对树莓派<del>用 GPU 启动 CPU 的神必启动方式</del>进行特殊处理</li>
+</ol>
+<h2 id="1-获得-ignition-配置文件"><a href="#1-获得-ignition-配置文件" class="headerlink" title="1. 获得 ignition 配置文件"></a>1. 获得 <code>ignition</code> 配置文件</h2><blockquote>
+<p>ignition n. 点火<del>发射！</del></p>
+</blockquote>
+<p>ignition 配置文件本质上是一个 JSON 文件。你当然可以<a target="_blank" rel="noopener" href="https://coreos.github.io/ignition/specs">手写 ignition 配置</a>；但是，CoreOS 给出了一个名为 butane（化学名称<em>丁烷</em>）的工具，可以让你以 YAML 格式编写配置文件，然后用 butane 转换成 ignition 的 JSON 格式。</p>
+<h3 id="编写-butane-配置文件"><a href="#编写-butane-配置文件" class="headerlink" title="编写 butane 配置文件"></a>编写 <code>butane</code> 配置文件</h3><p>以下是一份示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">variant:</span> <span class="string">fcos</span></span><br><span class="line"><span class="attr">version:</span> <span class="number">1.6</span><span class="number">.0</span></span><br><span class="line"><span class="attr">passwd:</span></span><br><span class="line">  <span class="attr">users:</span></span><br><span class="line">    <span class="comment"># core 是 Fedora CoreOS 默认配置好的一个用户，拥有 sudo 和 polkit 权限</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">core</span></span><br><span class="line">    <span class="comment"># CoreOS 默认不开启密码登录，所以需要提供 ssh 密钥</span></span><br><span class="line">      <span class="attr">ssh_authorized_keys:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">ssh-ed25519</span> <span class="string">AAAA......</span></span><br><span class="line"><span class="attr">storage:</span></span><br><span class="line">  <span class="attr">files:</span></span><br><span class="line">    <span class="comment"># zincati 是 Fedora CoreOS 上实现自动更新的守护进程</span></span><br><span class="line">    <span class="comment"># 详见 https://docs.fedoraproject.org/en-US/fedora-coreos/auto-updates/</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">path:</span> <span class="string">/etc/zincati/config.d/51-rollout-wariness.toml</span></span><br><span class="line">    <span class="comment"># 配置自动更新激进程度，数字越小越激进</span></span><br><span class="line">      <span class="attr">mode:</span> <span class="number">0644</span></span><br><span class="line">      <span class="attr">contents:</span></span><br><span class="line">        <span class="attr">inline:</span> <span class="string">|</span></span><br><span class="line"><span class="string">          [identity]</span></span><br><span class="line"><span class="string">          rollout_wariness = 0.75</span></span><br><span class="line"><span class="string"></span>    <span class="bullet">-</span> <span class="attr">path:</span> <span class="string">/etc/zincati/config.d/55-updates-strategy.toml</span></span><br><span class="line">    <span class="comment"># 配置自动更新策略</span></span><br><span class="line">      <span class="attr">mode:</span> <span class="number">0644</span></span><br><span class="line">      <span class="attr">contents:</span></span><br><span class="line">        <span class="attr">inline:</span> <span class="string">|</span></span><br><span class="line"><span class="string">          [updates]</span></span><br><span class="line"><span class="string">          # 设置更新重启窗口时段</span></span><br><span class="line"><span class="string">          strategy = &quot;periodic&quot;</span></span><br><span class="line"><span class="string">          [updates.periodic]</span></span><br><span class="line"><span class="string">          # 使用本地时区；需要在系统启动后使用 timedatectl 设置</span></span><br><span class="line"><span class="string">          # 或者直接在 butane/ignition 中指定</span></span><br><span class="line"><span class="string">          time_zone = &quot;localtime&quot;</span></span><br><span class="line"><span class="string">          [[updates.periodic.window]]</span></span><br><span class="line"><span class="string">          days = [ &quot;Sun&quot; ]</span></span><br><span class="line"><span class="string">          # 重启窗口起始时间</span></span><br><span class="line"><span class="string">          start_time = &quot;07:00&quot;</span></span><br><span class="line"><span class="string">          # 持续时长</span></span><br><span class="line"><span class="string">          length_minutes = 60</span></span><br><span class="line"><span class="string"></span>    <span class="bullet">-</span> <span class="attr">path:</span> <span class="string">/etc/systemd/zram-generator.conf</span></span><br><span class="line">    <span class="comment"># 为内存相对较小的树莓派开启 zram 内存压缩</span></span><br><span class="line">    <span class="comment"># 使用 zram-generator</span></span><br><span class="line">      <span class="attr">mode:</span> <span class="number">0644</span></span><br><span class="line">      <span class="attr">overwrite:</span> <span class="literal">true</span></span><br><span class="line">      <span class="attr">contents:</span></span><br><span class="line">        <span class="attr">inline:</span> <span class="string">|</span></span><br><span class="line"><span class="string">          #default settings</span></span><br><span class="line"><span class="string">          [zram0]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="获取-butane"><a href="#获取-butane" class="headerlink" title="获取 butane"></a>获取 butane</h3><ol>
+<li>容器<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">podman image pull quay.io/coreos/butane:release</span><br></pre></td></tr></table></figure></li>
+<li>包管理器<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Fedora / dnf</span><br><span class="line">sudo dnf install butane</span><br><span class="line"># Homebrew</span><br><span class="line">brew install butane</span><br></pre></td></tr></table></figure></li>
+<li>其余方法，<a target="_blank" rel="noopener" href="https://docs.fedoraproject.org/en-US/fedora-coreos/producing-ign/#_getting_butane">上官网看看</a></li>
+</ol>
+<h3 id="将-butane-转换成-ignition"><a href="#将-butane-转换成-ignition" class="headerlink" title="将 butane 转换成 ignition"></a>将 butane 转换成 ignition</h3><p><del>点燃丁烷</del></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">butane &lt; butane.bu &gt; ignition.ign</span><br></pre></td></tr></table></figure>
+
+<p>如果你使用容器版的 butane:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">podman container run --rm --interactive butane:release --pretty --strict &lt; butane.bu &gt; ignition.ign</span><br><span class="line"># 或者你想节省那几个换行符的空间</span><br><span class="line">podman container run --rm --interactive butane:release --strict &lt; butane.bu &gt; ignition.ign</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-安装-Fedora-CoreOS"><a href="#2-安装-Fedora-CoreOS" class="headerlink" title="2. 安装 Fedora CoreOS"></a>2. 安装 Fedora CoreOS</h2><p>使用 <code>coreos-installer</code> 将 CoreOS 镜像刷写至磁盘。</p>
+<p>你可以用容器来安装运行它：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo podman image pull quay.io/coreos/coreos-installer:release</span><br><span class="line">sudo podman container run --rm --privileged --volume /dev:/dev:rw --volume /run/udev:/run/udev:rw --volume path/to/ignition.ign:/ignition.ign:ro coreos-installer:release -a aarch64 -s stable -i /ignition.ign /dev/sda</span><br></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<ul>
+<li><code>-a</code>选项选定目标架构</li>
+<li><code>-s</code>选项选择更新流。CoreOS 有三个“更新流”，<code>stable</code>稳定, <code>testing</code>小白鼠, <code>next</code>不要命</li>
+<li><code>-i</code>选项指定 ignition 配置文件。我们使用 <code>--volume</code> 选项将我们的 ignition 配置文件挂载进容器</li>
+<li><code>/dev/sda</code> 指定目标磁盘。你的磁盘&#x2F;SD 卡&#x2F;U 盘&#x2F;whatever 可能有不一样的设备路径</li>
+</ul>
+<p>安装完毕后，你的 SD 卡或者 U 盘会拥有4个分区。</p>
+<h2 id="3-对树莓派做特殊处理"><a href="#3-对树莓派做特殊处理" class="headerlink" title="3. 对树莓派做特殊处理"></a>3. 对树莓派做特殊处理</h2><p>最魔幻的一个阶段来了。</p>
+<p>这里说明一下<del>本人猜测的</del> Raspberry Pi 4B 的大致启动流程：</p>
+<ol>
+<li>VideoCore IV GPU 启动，加载固化在 GPU 里的一阶段启动引导器；</li>
+<li>一阶段启动引导器读取板载 EEPROM 里的二阶段启动引导器；</li>
+<li>二阶段启动引导器读取 EEPROM 里的配置信息，按照指定的启动顺序尝试启动；</li>
+<li>从本地存储介质启动时，要求介质第一个分区格式为 <code>FAT32</code>，根目录下需要有 <code>start.elf</code> VideoCore 可执行文件；</li>
+<li>加载 <code>start.elf</code> 程序，启动第三阶段启动引导器；</li>
+<li><code>start.elf</code> 会寻找第一主分区根目录下的 <code>config.txt</code> 并按照这个配置文件设置外围设备（如 GPIO），加载内核、initramfs 以及 devicetree 和 devicetree overlay；</li>
+<li>最终，启动 bcm2711 ARM CPU 核心，将控制权转交内核。</li>
+</ol>
+<p>而具体到 Fedora CoreOS，情况又变得稍微有那么亿点点不一样。为了维持一致性，整个 Fedora 发行版系列都采用 GNU GRUB 作为启动引导器。而为了在类似于树莓派这样的“嵌入式” ARM 设备上启动（并维持一致性），Fedora 又给 GRUB 套了一层 U-Boot。于是，我们现在有了 5 层启动引导器。</p>
+<p><del>禁止套娃</del></p>
+<p>我们需要确保第二阶段启动引导能够找到第一主分区以及其中的 <code>start.elf</code>。而在我的安装过程中，现在的情况是：</p>
+<ol>
+<li>第一分区是一个类型为 <code>Linux reserved</code> 的无格式分区（大概是为了留出空间给 GRUB 嵌入 <code>grub.img</code>）；</li>
+<li>第二分区是一个 <code>FAT16</code> 格式的 <code>EFI System Partition</code>，里面存放的是 <code>grub.efi</code> 以及其他启动引导相关的 EFI 程序；但由于这是一个通用系统映像，它假设你的系统是一个 ARM SystemReady 平台（说人话就是 EFI 平台），并没有树莓派相关的启动固件。</li>
+</ol>
+<p>于是我们需要：</p>
+<ol>
+<li>调整分区表让第二阶段启动引导器能启动第三阶段启动引导器；</li>
+<li>重新格式化 ESP 为 <code>FAT32</code>；</li>
+<li>获取第三阶段启动引导器以及 U-Boot。</li>
+</ol>
+<h3 id="1-调整分区表"><a href="#1-调整分区表" class="headerlink" title="1. 调整分区表"></a>1. 调整分区表</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ fdisk /dev/sda</span><br><span class="line">（在 fdisk 提示符后依次输入）</span><br><span class="line">d (删除分区)</span><br><span class="line">1 (删除第一号分区)</span><br><span class="line">x (进入专家模式)</span><br><span class="line">f (修复分区顺序)</span><br><span class="line">r (返回主菜单)</span><br><span class="line">w (写入更改并退出)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-重新格式化-ESP"><a href="#2-重新格式化-ESP" class="headerlink" title="2. 重新格式化 ESP"></a>2. 重新格式化 ESP</h3><p>先备份 ESP 中的数据，然后 <code>mkfs.vfat -F 32 /dev/sda1</code>，最后再把数据拷回去。</p>
+<h3 id="3-获取第三阶段启动引导以及-U-Boot"><a href="#3-获取第三阶段启动引导以及-U-Boot" class="headerlink" title="3. 获取第三阶段启动引导以及 U-Boot"></a>3. 获取第三阶段启动引导以及 U-Boot</h3><p>Fedora 的官方仓库里已经有这些东西了，所以只需要从 Fedora 下载就可以了。</p>
+<p><del>没有 Fedora 就用容器顶着</del></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir boot-firmware</span><br><span class="line">$ dnf download --resolve --forcearch=aarch64 --releasever=$YOUR_RELEASE_NUMBER --destdir=boot-firmware/ bcm283x-firmware bcm283x-overlays bcm2711-firmware uboot-images-armv8</span><br><span class="line">$ for i in *.rpm; do</span><br><span class="line">rpm2cpio $i | cpio -idv -D boot-firmware/</span><br><span class="line">done</span><br><span class="line">$ cp boot-firmware/&#123;usr/share/uboot/rpi_arm64/u-boot.bin, boot/efi/rpi-u-boot.bin&#125;</span><br><span class="line">$ sudo mount /dev/sda1 /mnt</span><br><span class="line">$ sudo rsync -avh --ignore-existing --chown 0:0 boot-firmware/boot/efi/ /mnt/</span><br><span class="line">$ sudo umount /mnt</span><br></pre></td></tr></table></figure>
+
+<h2 id="好了"><a href="#好了" class="headerlink" title="好了"></a>好了</h2><p>你现在应该可以把你的启动介质插入树莓派并尝试启动了。</p>
+<h2 id="Fedora-CoreOS-食用方法"><a href="#Fedora-CoreOS-食用方法" class="headerlink" title="Fedora CoreOS 食用方法"></a>Fedora CoreOS 食用方法</h2><h3 id="系统更新"><a href="#系统更新" class="headerlink" title="系统更新"></a>系统更新</h3><p>这玩意是自动更新的，所以大概率不需要你手动管它。</p>
+<p>如果你想手动更新，可以使用 <code>zincati-update-now</code> 命令来让 zincati 检查一次更新。</p>
+<blockquote>
+<p>注意，截至文章写作时间(2026&#x2F;1&#x2F;15，CoreOS 版本 43.20251214.3.0)，此命令尚处于试验阶段，且在将来的更新中可能会有更改。</p>
+</blockquote>
+<blockquote>
+<p>如果你熟悉红帽子那套 <code>rpm-ostree</code> 包管理器，而且尝试用它来发起手动更新，你应该会注意到 <code>rpm-ostree</code> 说更新由<code>zincati</code> 管理，不能直接用 <code>rpm-ostree</code> 来更新。这时，你可以采用一个比较 hacky 的方法，就是停掉 <code>zincati.service</code> 来使 <code>rpm-ostree</code> 进入没有 update-driver 的手动管理状态。</p>
+</blockquote>
+<h3 id="系统回滚"><a href="#系统回滚" class="headerlink" title="系统回滚"></a>系统回滚</h3><p>如果系统滚挂了，你可以在启动时把键盘连接到树莓派，然后在 GRUB 启动选单里选择上一个 OSTree Deployment 启动。启动到上一个 deployment 之后，记得运行 <code>rpm-ostree rollback</code> 来将回滚的 deployment 设为默认启动项，并且停掉 <code>zincati.service</code> 以免又自动更新到新版本。</p>
+<h3 id="运行应用程序-x2F-服务"><a href="#运行应用程序-x2F-服务" class="headerlink" title="运行应用程序&#x2F;服务"></a>运行应用程序&#x2F;服务</h3><p>Fedora CoreOS 是“容器中心”的，也就是说你应该以容器的形式运行大部分应用程序。关于容器的使用方法，我目前还没有写相关的文章，请自行上网搜寻。</p>
+<p>系统内预装了 <code>podman</code> 和 <code>docker</code>，可以开箱即用地拉取、构建容器镜像，以及运行容器。要让 <code>core</code> 用户的容器在 <code>core</code> 用户登出后继续运行，可以使用 <code>loginctl enable-linger</code> 来让  <code>core</code> 用户的 <code>systemd</code> 用户服务管理器在用户登出后继续运行（也会在系统启动时自动启动）。</p>
+<p>注意，如果你的应用程序需要 <code>root</code> 特权，比如直接控制 GPIO 之类的，你需要以 <code>root</code> 身份拉取、构建镜像并运行容器。</p>
+<p><code>podman</code> 没有一个中心化的守护进程，如果想配置容器开机启动需要借助 <code>systemd</code>。可以手搓 <code>systemd</code> 单元文件（我就是），也可以用 <code>podman</code> 提供的一个 systemd generator，参见<code>podman-systemd.unit(5)</code> 手册页。</p>
+<h3 id="安装命令行工具"><a href="#安装命令行工具" class="headerlink" title="安装命令行工具"></a>安装命令行工具</h3><p>Fedora CoreOS 预装了 <a target="_blank" rel="noopener" href="https://containertoolbx.org/"><code>toolbx</code></a>(或者你也可以叫它 <code>toolbox</code>)，这是一个利用容器技术，在不可遍发行版上提供类似于传统发行版体验的工具。在保持根文件系统隔离的同时，与主机共享用户主目录、<code>ipc</code>, <code>net</code>, <code>pid</code> 等命名空间， <code>/dev</code>设备节点，以及dbus, X11 与 Wayland 套接字的互通。</p>
+<p>BTW，隔壁同为 Fedora 旗下的 Fedora Atomic Desktops 系列发行版也自带这个工具。</p>
+<p>摘自 <a target="_blank" rel="noopener" href="https://containertoolbx.org/">https://containertoolbx.org</a>：</p>
+<blockquote>
+<p>Toolbx is a tool for Linux, which allows the use of interactive command line environments for software development and troubleshooting the host operating system, without having to install software on the host. It is built on top of Podman and other standard container technologies from OCI. <br><br>Toolbx environments have seamless access to the user’s home directory, the Wayland and X11 sockets, networking (including Avahi and CA certificates), removable devices (like USB sticks), systemd journal, SSH agent, D-Bus, ulimits, &#x2F;dev and the udev database, etc.. The host file system can be accessed at &#x2F;run&#x2F;host.</p>
+</blockquote>
+<p>要创建 toolbox 容器，运行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">toolbox create</span><br></pre></td></tr></table></figure>
+
+<p>toolbox 会从 <code>quay.io/fedora/fedora-toolbox</code> 下拉取符合当前主机操作系统的 toolbox 容器镜像，并创建容器。</p>
+<p>运行<code>toolbox enter</code>来进入默认的 toolbox 容器。</p>
+<p>进入容器之后，你就可以像往常一样安装命令行工具了。例如安装 <code>htop</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo dnf install htop</span><br><span class="line">htop</span><br></pre></td></tr></table></figure>
+
+<p>It works like magic.<del>（就是有点费磁盘空间）</del></p>
+<p>你也可以以 <code>root</code> 身份使用 toolbox 来运行需要 <code>root</code> 特权的程序。</p>
+
+</article>
+
+			</div>
+		</div>
+	</body>
+	<script src="../subway/js/navigation.js"></script>
+	<script src="../subway/js/anchor.js"></script>
+	
+		<script src="../subway/js/copyCode.js"></script>
+	
+</html>
